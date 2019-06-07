@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2019 at 10:31 PM
+-- Generation Time: Jun 07, 2019 at 09:08 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `szakdolgozat`
 --
+CREATE DATABASE IF NOT EXISTS `szakdolgozat` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
+USE `szakdolgozat`;
 
 -- --------------------------------------------------------
 
@@ -101,7 +103,8 @@ INSERT INTO `hozzaszolasok` (`recept_id`, `ki`, `mit`) VALUES
 (2, 5, 'A másik jobban ízlett.'),
 (3, 9, 'Kicsit furának tartom ezt a kaját.'),
 (4, 5, 'Tetszik'),
-(8, 10, 'Végre egy új recept');
+(8, 10, 'Végre egy új recept'),
+(4, 10, 'igen');
 
 -- --------------------------------------------------------
 
