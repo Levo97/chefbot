@@ -79,8 +79,6 @@ include_once 'include/db.con.php'
 
 <script>
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const out = urlParams.get('out');
 
     if (out==1){
         alert("Sikeres kijelentkezés!");
@@ -117,7 +115,7 @@ include_once 'include/db.con.php'
         </span>
 
             </div></form>
-            <a href="#">részeketes keresés</a>
+            <a href="reszletes.php">részeketes keresés</a>
 
         </div>
         <div class="col-sm-9 tartalom">

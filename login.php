@@ -26,21 +26,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-
+/*
+ * Regisztráció
+ */
     if ($_POST["reg"]==0) {
         $username = test_input($_POST["username"]);
         $email = test_input($_POST["email"]);
         $password = test_input($_POST["password"]);
         $hash = hash('sha256',$password);
 
-        $sql = "INSERT INTO felhasznalok (username, jelszo, email)
-VALUES ('$username', '$hash', '$email')";
+        $sql = "select COUNT(username) as ertek from felhasznalok where username='$username' or email='$email'";
+        $felhasznalok = $conn->query($sql);
 
-        if ($conn->query($sql) === TRUE) {
-            echo "<script> alert('Sikeres regisztráció')</script> ";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+        $sql = "INSERT INTO felhasznalok (username, jelszo, email)
+
+VALUES ('$username', '$hash', '$email')";
+        $letezo_userek=0;
+        while($row = $felhasznalok->fetch_assoc()) {
+            $letezo_userek= $row["ertek"];
         }
+if ($letezo_userek != 0){
+    echo "már létezik";
+        }else{
+
+    if ($conn->query($sql) === TRUE) {
+        echo "<script> alert('Sikeres regisztráció')</script> ";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+        }
+
     }else if ($_POST["reg"]==1) {
         $logname = test_input($_POST["logname"]);
         $logpass = test_input($_POST["logpass"]);
@@ -87,19 +102,19 @@ function test_input($data) {
                 <fieldset>
                         <p class="text-uppercase pull-center"> Regisztráció: </p>
                         <div class="form-group">
-                            <input type="text" name="username" id="username" class="form-control input-lg" placeholder="username">
+                            <input type="text" name="username" id="username" class="form-control input-lg" placeholder="felhasználónév">
                         </div>
 
                         <div class="form-group">
-                            <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address">
+                            <input type="email" name="email" id="email" class="form-control input-lg" placeholder="email cím">
                         </div>
                         <div class="form-group">
-                            <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+                            <input type="password" name="password" id="password" class="form-control input-lg" placeholder="jelszó">
                         </div>
 
 
                         <div>
-                            <input type="submit" class="btn btn-lg btn-primary   value="Register">
+                            <input type="submit" class="btn btn-md"   value="Regisztráció">
                         </div>
                     </fieldset>
                 </form>
@@ -117,13 +132,13 @@ function test_input($data) {
                         <p class="text-uppercase"> Bejelentkezés: </p>
 
                         <div class="form-group">
-                            <input type="text" name="logname" id="logname" class="form-control input-lg" placeholder="username">
+                            <input type="text" name="logname" id="logname" class="form-control input-lg" placeholder="felhasználónév">
                         </div>
                         <div class="form-group">
-                            <input type="password" name="logpass" id="logpass" class="form-control input-lg" placeholder="Password">
+                            <input type="password" name="logpass" id="logpass" class="form-control input-lg" placeholder="jelszó">
                         </div>
                         <div>
-                            <input type="submit" class="btn btn-md" value="Sign In">
+                            <input type="submit" class="btn btn-md" value="Bejelentkezés">
                         </div>
 
                     </fieldset>
