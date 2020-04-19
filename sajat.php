@@ -1,21 +1,11 @@
 <?php
-include_once 'include/menu.php'
-?>
-<?php
-$keres="";
-if(isset($_POST["keres"])){
-    $keres = $_POST["keres"];
+include_once 'include/menu.php';
 
-}    $sql = "SELECT id,neve,mikor FROM recept Where LOWER(neve) like LOWER('%$keres%') ORDER BY mikor";
+$uid=$_SESSION['id'];
 
-if(isset($_GET["id"])){
-    $id = $_GET["id"];
+$sql = "SELECT id,neve,mikor FROM recept where szerzo_id='$uid' order by mikor desc";
 
-    $sql = "SELECT id as id,neve,mikor FROM recept,kategoriak where kategoriak.recept_id=recept.id  and kategoriak.kategoria_id='$id'";
-
-}
 $result = $conn->query($sql);
-
 echo "<h3 style=\"color: white\">Ezeket találtuk:</h3>";
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -40,12 +30,3 @@ if ($result->num_rows > 0) {
 $conn->close();
 
 ?>
-
-</div>
-</div>
-</div>
-
-
-
-</body>
-</html>

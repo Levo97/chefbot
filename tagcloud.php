@@ -1,9 +1,9 @@
 
 
 
-<div id="tagcloud">
+<div id="doboz">
     <?php
-  include_once 'include/menu.php';
+    include_once 'include/menu.php';
 
     $sql = "SELECT kategoria.id as id ,kategoria.neve as neve,count(*)  as db FROM kategoriak , kategoria where kategoriak.kategoria_id=kategoria.id group by kategoria_id ";
     $result = $conn->query($sql);

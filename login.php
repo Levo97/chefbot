@@ -38,6 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "select COUNT(username) as ertek from felhasznalok where username='$username' or email='$email'";
         $felhasznalok = $conn->query($sql);
 
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number    = preg_match('@[0-9]@', $password);
+        $specialChars = preg_match('@[^\w]@', $password);
+        $specialChars2 = preg_match('@[^\w]@', $username);
+
+
+
         $sql = "INSERT INTO felhasznalok (username, jelszo, email)
 
 VALUES ('$username', '$hash', '$email')";
@@ -46,30 +54,56 @@ VALUES ('$username', '$hash', '$email')";
             $letezo_userek= $row["ertek"];
         }
 if ($letezo_userek != 0){
-    echo "már létezik";
+    echo '<script language="javascript">';
+    echo ' alert("Ez a felhasználó már létezik!"); ';
+    echo '</script>';        }else{
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo '<script language="javascript"> alert("Hibás email formátum!");</script>';
+}else{
+   if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+            echo '<script language="javascript"> alert("A jelszónak legalább 8 karakter hosszúnak kell lennie kis és nagy betűkkel, valamint legalább egy speciális karakterrel");</script>';
         }else{
-
+       if (!$specialChars2 || $username >= 6){
     if ($conn->query($sql) === TRUE) {
-        echo "<script> alert('Sikeres regisztráció')</script> ";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-        }
+        echo '<script language="javascript">';
+        echo 'alert("Sikeres regisztráció!");';
+        echo '</script>';    }
+       }else{
+               echo '<script language="javascript"> alert("A felhasználónévnek legalább 6 karakter hosszúnak kell lennie és nem tartalmazhat speciális karaktereket");</script>';
 
+       } }}}
+
+/*
+ * Bejelentkezés
+ */
     }else if ($_POST["reg"]==1) {
         $logname = test_input($_POST["logname"]);
         $logpass = test_input($_POST["logpass"]);
         $loghash= hash('sha256',$logpass);
 
 
-        $sq2 = "SELECT id, username FROM felhasznalok WHERE '$loghash'=jelszo AND '$logname'=username";
+
+        $sq2 = "SELECT id, username, tiltott FROM felhasznalok WHERE '$loghash'=jelszo AND '$logname'=username";
         $result = $conn->query($sq2);
 
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
+                if ($row["tiltott"]!=1){
                 $_SESSION["user"] = $row["username"];
                 $_SESSION["id"] = $row["id"];
-                echo "<script>window.location.href = 'index.php';</script> ";            }
+                $ido=date("Y-m-d H:i:s");
+                $sq2 = "Update  felhasznalok  set bejelentkezve='$ido' WHERE '$loghash'=jelszo AND '$logname'=username";
+                $result = $conn->query($sq2);
+                echo "<script>window.location.href = 'index.php';</script> ";
+
+                }else{
+                    echo '<script language="javascript"> alert("A profilod le lett tiltva moderátorunk által");</script>';
+
+
+                }
+
+                }
         } else {
             echo " <p style='color:red'>Hibás adatok bejelentkezéskor!</p>";
         }

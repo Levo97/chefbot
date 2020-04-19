@@ -2,11 +2,12 @@
 include_once 'include/menu.php'
 ?>
         <?php
-        $sql = "SELECT * FROM recept ORDER BY mikor DESC LIMIT 3";
+        $sql = "SELECT * FROM recept where hidden=0 ORDER BY mikor DESC LIMIT 3";
         $result = $conn->query($sql);
 
-        ?>
-            <h3 style="color: white">Legfrissebb receptek:</h3>
+        ?>      <div class='box' >
+
+<h3 style="color: white">Legfrissebb receptek:</h3>
 
             <h2><?php if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
@@ -21,20 +22,20 @@ include_once 'include/menu.php'
                                 <h5>".$row["mikor"]."</h5>
                             </div>
                             </a>
-                        </div>
-                        </div>";
+                        </div>      </div>
+                        ";
                     }
                 } else {
                     echo "0 results";
                 }
-                ?></h2>
-<hr style="display: none" id="vonal">
+                ?></div></h2>/
+<hr style="display: none" id="vonal"> <div class='box' >
     <h3 style="color: white; display: none" id="favoritId">Kedvenc receptjeim:</h3>
     <div  style='height: 300px; overflow-y: auto'>
     <?php
     if(isset($_SESSION["id"])) {
         $uid = $_SESSION["id"];
-        $sql = "SELECT * FROM recept, pontozas WHERE pontozas.ki=" . $uid . " AND pontozas.fel=1 AND pontozas.mit=recept.id";
+        $sql = "SELECT * FROM recept, pontozas WHERE  hidden=0  and pontozas.ki=" . $uid . " AND pontozas.pont=1 AND pontozas.mit=recept.id";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -49,6 +50,7 @@ include_once 'include/menu.php'
                                 <h5>" . $row["mikor"] . "</h5>
                             </div>
                             </a>
+                        </div>
                         </div>
                         </div>
                         <script>
