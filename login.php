@@ -89,7 +89,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                if ($row["tiltott"]!=1){
+                    $_SESSION["tiltott"] = $row["tiltott"];
                 $_SESSION["user"] = $row["username"];
                 $_SESSION["id"] = $row["id"];
                 $ido=date("Y-m-d H:i:s");
@@ -97,11 +97,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $result = $conn->query($sq2);
                 echo "<script>window.location.href = 'index.php';</script> ";
 
-                }else{
-                    echo '<script language="javascript"> alert("A profilod le lett tiltva moderátorunk által");</script>';
 
-
-                }
 
                 }
         } else {

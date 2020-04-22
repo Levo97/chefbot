@@ -17,6 +17,7 @@ include_once 'include/menu.php'
     <form action="upload.php" method="post" enctype="multipart/form-data">
         <h3>Add meg a recepted nevét:</h3>
         <input type="text" id="nev" name="nev" maxlength="20" placeholder="Recept neve"><br>
+        <img src='include/img/ujrecept.png' style=" max-width:500px; " align="right">
 
         <?php
         $sql = "SELECT alapanyagok_id,mertekegyseg_id , mertekegyseg.neve as mertekegyseg_neve, alapanyagok.neve as alapanyag_neve FROM alapanyagok_meretekegyseg,mertekegyseg, alapanyagok where mertekegyseg.id=alapanyagok_meretekegyseg.mertekegyseg_id and alapanyagok_meretekegyseg.alapanyagok_id=alapanyagok.id ";

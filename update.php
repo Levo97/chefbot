@@ -3,6 +3,7 @@ include_once 'include/menu.php'
 ?>
 <p style="color: white">
     <?php
+    $szekresztes=$_POST["szerkesztes"];
 
     $nev = $_POST["nev"];
     $leiras = $_POST["szoveg"];
@@ -43,21 +44,13 @@ include_once 'include/menu.php'
     }
 
 
-    $sql = "SELECT MAX(id) AS maxi FROM recept";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        // output data of each row
-        while($row = $result->fetch_assoc()) {
-            $maxid=$row["maxi"]+1;
-        }
-    } else {
-        echo "0 results";
-    }
+        $maxid=$_POST["szerkesztes"];
+        $maxid = str_replace(' ', '', $maxid);
 
 
     $target_dir = "include/img/";
     $target_file = $target_dir . $maxid.".jpg";
+
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
     // Check if image file is a actual image or fake image
@@ -71,10 +64,8 @@ include_once 'include/menu.php'
             $uploadOk = 0;
         }
     }
-    // Mivel a szerkesztésnél kell ez a funkció
-   if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
+    if (file_exists($target_file)) {
+        unlink($target_file);
     }
     // Check file size
     if ($_FILES["fileToUpload"]["size"] > 500000) {
@@ -92,43 +83,30 @@ include_once 'include/menu.php'
 // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-            //Ha sikerült a kép jöhetnek az adatok
-            $uid=$_SESSION['id'];
-            if (strlen($egyeb)<2){
-                $sql = "INSERT INTO recept (szerzo_id, neve, leiras,missing_data)VALUES ($uid,'$nev','$leiras',null )";
+            clearstatcache();
+                $uid=$_SESSION['id'];
+                if (strlen($egyeb)<2){
 
-            }else{  $sql = "INSERT INTO recept (szerzo_id, neve, leiras,missing_data)VALUES ($uid,'$nev','$leiras','$egyeb')";}
+                    $sql = "UPDATE recept SET neve = '$nev', leiras = '$leiras',missing_data = null WHERE id=$maxid;";
 
-            if ($conn->multi_query($sql) === TRUE) {
-                $recept=0;
+                }else{  $sql = "UPDATE recept SET neve = '$nev', leiras = '$leiras',missing_data = $egyeb WHERE id=$maxid;";}
+                if ($conn->multi_query($sql) === TRUE) {
+                    $sql = "delete from  hozzavalok where  recept_id=$maxid;";
+                    $result = $conn->query($sql);
+                    $sql = "delete from  kategoriak where  recept_id=$maxid;";
+                    $result = $conn->query($sql);
 
-                $stmt = $conn->prepare("select id as id  from recept where szerzo_id=? and neve like ? and  leiras like ? ");
-                $stmt->bind_param("sss", $uid , $nev, $leiras);
-                $stmt->execute();
-                $result = $stmt->get_result();
+                    foreach ($hozzavalok as $hozzavalo){
+                        $sql = "INSERT INTO hozzavalok  (recept_id, alapanyag_id, mennyiseg)VALUES (".$maxid.",".$hozzavalo['hozzavalo_id'].",".$hozzavalo['mennyiseg'].")";
+                        $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        $recept=$row['id'];
                     }
-
-
-                foreach ($hozzavalok as $hozzavalo){
-                    $sql = "INSERT INTO hozzavalok  (recept_id, alapanyag_id, mennyiseg)VALUES (".$recept.",".$hozzavalo['hozzavalo_id'].",".$hozzavalo['mennyiseg'].")";
-                    $result = $conn->query($sql);
-
+                    for ($i=0; $i < (count($kategoriak)); $i++ ){
+                        $sql = "INSERT INTO kategoriak  (kategoria_id, recept_id)VALUES (".$kategoriak[$i].",".$maxid." )";
+                        $result = $conn->query($sql);
+                    }
                 }
-                for ($i=0; $i < (count($kategoriak)); $i++ ){
-                    $sql = "INSERT INTO kategoriak  (kategoria_id, recept_id)VALUES (".$kategoriak[$i].",".$recept." )";
-                    $result = $conn->query($sql);
-                }}
-
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-            $conn->close();
-             echo "<script>window.location.href = 'index.php';</script> ";
-        } else {
+             } else {
             echo "Sorry, there was an error uploading your file.";
         }
     }
