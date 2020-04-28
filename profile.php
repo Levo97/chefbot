@@ -1,5 +1,7 @@
 <?php
-include_once 'include/menu.php'
+include_once 'include/menu.php';
+if (isset($_SESSION["id"])){
+
 ?>
 <?php $view = 0;
 
@@ -10,9 +12,9 @@ if (isset($_GET['id'])) {
 }
 
 
-$sql = "SELECT SUM(pontozas.pont) AS tmp FROM pontozas,recept where recept.szerzo_id=$id and pontozas.mit=recept.id";
+$sql = "SELECT SUM(pontozas.pont) AS tmp FROM pontozas,recept where recept.szerzo_id=$id and recept.hidden=0 and  pontozas.mit=recept.id";
 
-$sql2 = "SELECT COUNT(recept.id) AS tmp2 from recept where  recept.szerzo_id=$id";
+$sql2 = "SELECT COUNT(recept.id) AS tmp2 from recept where recept.hidden=0 and recept.szerzo_id=$id";
 
 
 $sql0 = "SELECT * FROM felhasznalok where id= $id";
@@ -34,7 +36,7 @@ $titulus = "";
 $kep = "";
 $darab = 0;
 ?>
-<div class='doboz'>
+<div class="doboz" >
     <div class="kozep">
         <?php
         $nev = $kert_felhasznalo['username'];
@@ -136,3 +138,9 @@ $darab = 0;
     </div>
     </body>
     </html>
+    <?php
+}else{
+    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white'>hmmm... lehet eltévedtünk</font></h1></div>
+    ";
+}

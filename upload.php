@@ -4,17 +4,45 @@ include_once 'include/menu.php'
 <p style="color: white">
     <?php
 
-    $nev = $_POST["nev"];
-    $leiras = $_POST["szoveg"];
-    $egyeb = $_POST["egyeb"];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (empty($_POST["nev"])) {
+            echo "<script>window.location.href = 'ujrecept.php';</script> ";
+        } else {
+            $nev = test_input($_POST["nev"]);
+        }
 
+
+
+        if (empty($_POST["egyeb"])) {
+            echo "<script>window.location.href = 'ujrecept.php';</script> ";
+        } else {
+            $egyeb = test_input($_POST["egyeb"]);
+        }
+
+
+
+        if (empty($_POST["azonosito"])) {
+            echo "<script>window.location.href = 'ujrecept.php';</script> ";
+        } else {
+            $azonosito = test_input($_POST["azonosito"]);
+        }
+    }
+
+    function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
+    $kategoriak = ($_POST["kategoriak"]);
+
+    $leiras=$_POST["szoveg"];
     $maxid = 0;
     $kategoriak=array();
-    $kategoriak= $_POST["kategoriak"];
 
     $hozzavalok=array();
 
-    $azonosito= (int) $_POST["azonosito"];
 
 
 
@@ -112,6 +140,18 @@ include_once 'include/menu.php'
                         $recept=$row['id'];
                     }
 
+                    $sql = "select id from uzenetek_ticket where felhasznalo_id=$uid and tema_id=0";
+                    $x = $conn->query($sql);
+                    if ($x->num_rows > 0) {
+                        while($sor = $x->fetch_assoc()) {
+                            $ido=date("Y-m-d H:i:s");
+                            $sql = "insert into unenetek (ticket_id,uzenet,mikor) values (".$sor['id']." ,'Sikeresen rögzítetted a ".$nev." receptet. Amint a séf jóváhagyja megy a menüre.', $ido)";
+                            $x = $conn->query($sql);
+
+                        }}else{
+                        $sql = "insert into uzenetek_ticket (felhasznalo_id) values ($uid)";
+                        $x = $conn->query($sql);
+                    }
 
                 foreach ($hozzavalok as $hozzavalo){
                     $sql = "INSERT INTO hozzavalok  (recept_id, alapanyag_id, mennyiseg)VALUES (".$recept.",".$hozzavalo['hozzavalo_id'].",".$hozzavalo['mennyiseg'].")";
@@ -127,7 +167,7 @@ include_once 'include/menu.php'
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
             $conn->close();
-             echo "<script>window.location.href = 'index.php';</script> ";
+          //   echo "<script>window.location.href = 'index.php';</script> ";
         } else {
             echo "Sorry, there was an error uploading your file.";
         }

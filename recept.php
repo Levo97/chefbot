@@ -67,9 +67,13 @@ while ($row = $result->fetch_assoc()) {
             echo "</div></div>";
         }
         if ($recept_szerkesztes == 1) {
-            echo "   <form method='post' action='szerkesztes.php'><button id=\"recept_az\" name=\"recept_az\" type=\"submit\" class=\"btn btn-primary\" value='" . $row["id"] . " '>Szerkesztés</button></form>";
-            echo "    
-    <form method='post' action='kezeles.php'>
+            echo "     <div class=\"btn-group\">
+ <form method='post' action='szerkesztes.php'>
+   
+   <button id=\"recept_az\" name=\"recept_az\" type=\"submit\" class=\"btn btn-primary\" value='" . $row["id"] . " '>Szerkesztés</button></form>";
+
+  echo "<form method='post' action='kezeles.php'> <input type='hidden' name='szerzo' id='szerzo' value='" . $row["szerzo_id"] . " '>
+
       <input type=\"hidden\" id=\"recept_az\" name=\"recept_az\" value='";echo$row["id"];echo"'>
             <input type=\"hidden\" id=\"recept_status\" name=\"recept_status\" value='" . $hidden_recept . "'>
 
@@ -79,12 +83,13 @@ while ($row = $result->fetch_assoc()) {
                 echo "<button type=\"submit\" name='etlap_modositas' id='etlap_modositas' class=\"btn btn-primary\">Leveszem az étlapról</button></form>";
             }
             if ($hidden_recept == 1) {
+
                 echo "<button type=\"submit\" name='etlap_modositas' id='etlap_modositas' class=\"btn btn-primary\">Felteszem az étlapra</button></form>";
             }
 
-        }
+            echo "</div>";}
 
-        echo "
+        echo"
                             <p><ol>" . $row["leiras"] . "</ol></p>
                             <table class=\"table table-striped\">
     <thead>
@@ -188,33 +193,61 @@ if ($hidden_recept == 0){
 
             if (isset($_POST['text'])) {
 
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if (empty($_POST["nev"])) {
+                        echo 'alert("Nem megfelelő hozzászólás")';
+                    } else {
+                        $text = test_input(($_POST['text']));
+
+                function test_input($data) {
+                    $data = trim($data);
+                    $data = stripslashes($data);
+                    $data = htmlspecialchars($data);
+                    return $data;
+                }
+
 
                 if ($_SESSION["tiltott"]!= 1) {
 
-                    $sql3 = "INSERT INTO hozzaszolasok (recept_id,ki,mit) values ($id,$sessId,'" . $_POST['text'] . "')";
+                    $sql3 = "INSERT INTO hozzaszolasok (recept_id,ki,mit) values ($id,$sessId,'$text')";
                     $conn->query($sql3);
                 } else {
                     echo '<script language="javascript">';
                     echo 'alert("A felhasználódnál jelenleg le van tiltva a ez a funkció..")';
                     echo '</script>';
                 }
+            } }
+
             }
+
 
             if (isset($_POST['felhasznalo'])) {
                 $felhasznalo_id=$_SESSION['id'] ;
                 $rm = "UPDATE hozzaszolasok set moderated=1 where id= '" . $_POST['felhasznalo'] . "'";
+                $result = $conn->query($rm);
+
+                $rm = "SELECT uzenetek_ticket.id as ticket_id FROM uzenetek_ticket where $felhasznalo_id=felhasznalo_id  AND tema_id=0 ";
 
                 $result = $conn->query($rm);
 
-                $rm = "insert into uzenetek_ticket (felhasznalo_id ,tema_id	) values ($felhasznalo_id,3)";
+                $ticket_id=0;
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ticket_id= $row["ticket_id"];
+            }                $ido=date("Y-m-d H:i:s");
+
+            $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ($ticket_id,0,'A ".$recept_neve." recepthez való hozzászólásod nem helyénvaló, ezért töröltük.', '$ido')";
+            $result = $conn->query($rm);
+
+        }else{
+
+                $rm = "insert into uzenetek_ticket (felhasznalo_id 	) values ($felhasznalo_id)";
                 $result = $conn->query($rm);
 
                 $ido=date("Y-m-d H:i:s");
 
-                $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ((SELECT MAX(id) from uzenetek_ticket WHERE uzenetek_ticket.felhasznalo_id=$felhasznalo_id and uzenetek_ticket.tema_id=3),0,'A ".$recept_neve." recepthez való hozzászólásod nem helyénvaló, ezért töröltük. ', '$ido')";
-
-                $result = $conn->query($rm);
-
+                $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ((SELECT MAX(id) from uzenetek_ticket WHERE uzenetek_ticket.felhasznalo_id=$felhasznalo_id and uzenetek_ticket.tema_id=0),0,'A ".$recept_neve." recepthez való hozzászólásod nem helyénvaló, ezért töröltük. ', '$ido')";
+                $result = $conn->query($rm);}
             }
         }
         $sql2 = "SELECT mit, username,hozzaszolasok.id as hozzaszolasok_id FROM hozzaszolasok, felhasznalok where $id=hozzaszolasok.recept_id AND hozzaszolasok.ki=felhasznalok.id and moderated=0 ";
@@ -247,7 +280,7 @@ if ($hidden_recept == 0){
         echo "<form method = 'post' id = 'hozzaId' action ='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id'>
     <div class='form-group align-center' style = 'margin-left: 10%; margin-right: 10%;' >
         <label for='comment' > Szólj hozzá:</label >
-        <textarea class='form-control' rows = '5' id = 'text' name = 'text' ></textarea >
+        <textarea class='form-control' rows = '5' id = 'text' name = 'text' required  minlength=\"10\"></textarea >
         <button type = 'submit' class='btn btn-success' > Hozzászólás</button >
     </div >
 </form >

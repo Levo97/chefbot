@@ -5,7 +5,40 @@ echo "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-sel
 <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script>
 <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>
 <script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js\"></script>";
+if( isset($_POST['torles'])){
+$recept_id_x=$_POST['torles'];
 
+    $stmt = $conn->prepare("delete from  hozzaszolasok where recept_id= ? ");
+     $stmt->bind_param('s', $recept_id_x);
+    $stmt->execute();
+
+    $stmt = $conn->prepare("delete from  hozzavalok where recept_id= ? ");
+     $stmt->bind_param('s', $recept_id_x);
+    $stmt->execute();
+
+    $stmt = $conn->prepare("delete from  kategoriak where recept_id= ? ");
+     $stmt->bind_param('s', $recept_id_x);
+    $stmt->execute();
+
+    $stmt = $conn->prepare("delete from  pontozas where mit= ? ");
+     $stmt->bind_param('s', $recept_id_x);
+    $stmt->execute();
+
+     $stmt = $conn->prepare("delete from  recept where id= ? ");
+     $stmt->bind_param('s', $recept_id_x);
+    $stmt->execute();
+
+        $recept_id_x = str_replace(' ', '', $recept_id_x);
+
+        $target_dir = "include/img/";
+        $target_file = $target_dir . $recept_id_x.".jpg";
+
+        unlink($target_file);
+
+                    echo "<script>window.location.href = 'index.php';</script> ";
+
+
+}
 if (isset($_POST["recept_az"]) && isset($_SESSION['id'])) {
 
     $uid = $_SESSION['id'];
@@ -127,14 +160,14 @@ $kep="include/img/".$string.".jpg";
                            </div> 
                         
   <h3>A recepted neve:</h3>
-        <input type=\"text\" id=\"nev\" name=\"nev\" maxlength=\"20\" placeholder=\"Recept neve\" value='" . $recept["neve"] . "'><br>
+        <input type=\"text\" id=\"nev\" name=\"nev\" maxlength=\"20\" placeholder=\"Recept neve\" value='" . $recept["neve"] . "' required><br>
  
 
   <h3>Hozzávalók:</h3>
 
         <div id=\"hozzavalok\" class=\"form-group\">
             <div id=\"hozzavalo\">
-                <select id=\"alapanyag\" name=\"1\" onchange=\"frissit(0)\" class=\"form-control\">
+                <select id=\"alapanyag\" name=\"1\" onchange=\"frissit(0)\" class=\"form-control\" required>
                     <option disabled selected value> Válassz...</option>";
 
     foreach ($alapanyagok as $alapanyag) {
@@ -157,7 +190,7 @@ $kep="include/img/".$string.".jpg";
 
   <h3>Kategóriák:</h3>
         <select data-live-search=\"true\" data-live-search-style=\"startsWith\" class=\"selectpicker\" multiple
-                name=\"kategoriak[]\">";
+                name=\"kategoriak[]\" required>";
     foreach ($kategoriak as $kategoria) {
         foreach ($kivalasztott_kat as $kivalasztott) {
             if ($kategoria['id'] == $kivalasztott['id']) {
@@ -213,6 +246,8 @@ var hozzavalokasd = ";
             document.getElementsByTagName("textarea")[0].setAttribute("class", "form-control");
             document.getElementsByTagName("textarea")[0].setAttribute("id", "text1");
             document.getElementsByTagName("textarea")[0].setAttribute("name", "text1");
+            document.getElementsByTagName("textarea")[0].setAttribute("required", "");
+
             document.getElementsByTagName("textarea")[0] .value=lepesek[0];
             var darab = 1;
 
@@ -264,12 +299,15 @@ var hozzavalokasd = ";
         <button style="margin-top: 1%;" type="submit" class="btn btn-success" onclick="fuz()">Feltöltöm</button>
 
 
-  </form>
 
+  </form> <form method='post' action='szerkesztes.php'>
+<button style="margin-top: 1%;" type="submit" name="torles" class="btn btn-danger" value="<?php echo $recept_id; ?>">Recept törlése</button>
+</form>
 
 
 
      <script>
+
             function fuz() {
                 var szoveg = document.getElementById("szoveg");
                 var ossze = "";

@@ -1,5 +1,12 @@
 <?php
 include_once 'include/menu.php';
+if (isset($_SESSION["id"])){
+
+    echo "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css\">
+<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.css\"/>
+<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script>
+<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js\"></script>";
 
 $uid = $_SESSION['id'];
 
@@ -10,7 +17,6 @@ $result = $stmt->get_result();
 $jogom = array();
 
 
-echo "<h3 style=\"color: white\">Ezeket találtuk:</h3>";
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
@@ -58,12 +64,14 @@ if ($result->num_rows > 0) {
 }
 
 
+
+
 if ($jogom['rights'] == 1) {
     echo "<div class='doboz '>
 <p> <ins><b>A kiválasztott felhasználókhoz itt lehet jogokat hozzárendelni.</b> </ins></p>
 <form method='post' action='kezeles.php'>
 <label for=\"users\">Felhasználó:</label>
-<select id=\"users\" name=\"users\">
+<select data-live-search=\"true\" class=\"selectpicker\" id=\"users\" name=\"users\" required>
     <option disabled selected value> Válassz...</option>
 
 ";
@@ -74,7 +82,7 @@ if ($jogom['rights'] == 1) {
 </select>
 
 <label for=\"rights\">Jogok:</label>
-<select id=\"rights\" name=\"rights\">
+<select id=\"rights\" name=\"rights\" class=\"selectpicker\" required>
 ";
 
     echo " 
@@ -147,7 +155,7 @@ if ($jogom['rights'] == 1) {
 <p> <ins><b>A kiválasztott felhasználótól itt lehet jogot elvenni.</b> </ins></p>
 <form method='post' action='kezeles.php'>
 <label for=\"users2\">Felhasználó:</label>
-<select id=\"users2\" name=\"users2\">
+<select id=\"users2\" name=\"users2\" data-live-search=\"true\" class=\"selectpicker\" required>
     <option disabled selected value> Válassz...</option>
 
 ";
@@ -158,7 +166,7 @@ if ($jogom['rights'] == 1) {
 </select>
 
 <label for=\"rights2\">Jogok:</label>
-<select id=\"rights2\" name=\"rights2\">
+<select id=\"rights2\" name=\"rights2\" class=\"selectpicker\" required>
 ";
 
     echo "  
@@ -176,7 +184,6 @@ if ($jogom['rights'] == 1) {
 </form>
 ";
     if (isset($_POST['users2'])) {
-
         $sql = "SELECT IF ( EXISTS (SELECT * FROM jogok WHERE felhasznalok_id=" . $_POST["users2"] . ") , 1, 0) as valid ";
         $result = $conn->query($sql);
         $letezik = 2;
@@ -185,15 +192,25 @@ if ($jogom['rights'] == 1) {
                 $letezik = $row['valid'];
             }
         }
-
         if ($letezik == 1) {
 
+
+            $sql = "SELECT " . $_POST["rights2"] . " as boolean from jogok  where felhasznalok_id=" . $_POST["users2"] . "  ";
+            $result = $conn->query($sql);
+            $jelenlegi = 2;
+            while ($row = $result->fetch_assoc()) {
+                $jelenlegi = $row['boolean'];
+            }
+
+            if ($jelenlegi==1){
             $sql = "UPDATE jogok  set " . $_POST["rights2"] . " =0 where felhasznalok_id=" . $_POST["users2"] . "  ";
             $result = $conn->query($sql);
 
             echo '<script language="javascript">';
             echo 'alert("Sikeresen elvettük a jogosultságot.")';
-            echo '</script>';
+            echo '</script>';}else{ echo '<script language="javascript">';
+                echo 'alert("Nincs ilyen joga ennek a felhasználónak")';
+                echo '</script>';}
 
         } else if ($letezik == 0) {
 
@@ -206,7 +223,7 @@ if ($jogom['rights'] == 1) {
     }
 
 
-    $sql = "SELECT felhasznalok.username as username, alapanyagok_moderate, hozzaszolasok_moderate,felhasznalok_moderate,kategoriak_moderate,mertekegyseg_moderate,recept_moderate,rights_manage FROM felhasznalok,jogok where jogok.felhasznalok_id=felhasznalok.id  ";
+    $sql = "SELECT felhasznalok.username as username, alapanyagok_moderate, hozzaszolasok_moderate,felhasznalok_moderate,kategoriak_moderate,mertekegyseg_moderate,recept_moderate,rights_manage FROM felhasznalok,jogok where jogok.felhasznalok_id=felhasznalok.id and ((alapanyagok_moderate=1) or (hozzaszolasok_moderate=1) or (felhasznalok_moderate=1) or (kategoriak_moderate=1) or (mertekegyseg_moderate=1) or (recept_moderate=1) or (rights_manage=1) )   ";
     $result = $conn->query($sql);
     $kivaltsagosok = array();
 
@@ -303,7 +320,7 @@ if ($jogom['felhasznalok'] == 1) {
 <p><ins><b> A kiválasztott felhasználót itt lehet letiltani.</b> </ins></p>
 <form method='post' action='kezeles.php'>
 <label for=\"users3\">Felhasználó:</label>
-<select id=\"users3\" name=\"users3\">
+<select id=\"users3\" name=\"users3\"  data-live-search=\"true\" class=\"selectpicker\" required>
     <option disabled selected value> Válassz...</option>
 
 ";
@@ -354,7 +371,7 @@ if ($jogom['felhasznalok'] == 1) {
 <p> <ins><b>A kiválasztott felhasználó tiltásának visszavonása. </b></ins></p>
 <form method='post' action='kezeles.php'>
 <label for=\"users4\">Felhasználó:</label>
-<select id=\"users4\" name=\"users4\">
+<select id=\"users4\" name=\"users4\"  data-live-search=\"true\" class=\"selectpicker\" required>
     <option disabled selected value> Válassz...</option>
 
 ";
@@ -450,10 +467,10 @@ if ($jogom['alapanyagok'] == 1) {
     <form method='post' action='kezeles.php'>
 
     <label for=\"rname\">Neve:</label>
-  <input type=\"text\" id=\"alapanyag_neve\" name=\"alapanyag_neve\">
+  <input type=\"text\" id=\"alapanyag_neve\" name=\"alapanyag_neve\" required>
   
   <label for=\"fname\">Mértékegysége:</label>
-  <select id=\"mertekegyseg\" name=\"mertekegyseg\">
+  <select id=\"mertekegyseg\" name=\"mertekegyseg\" class=\"selectpicker\" required>
     <option disabled selected value> Válassz...</option>
 
   ";
@@ -473,10 +490,10 @@ if ($jogom['alapanyagok'] == 1) {
   </tr>
   
   <tr>
-    <td><input type=\"number\" id=\"alapanyag_energia\" name=\"alapanyag_energia\"  step=\"0.01\"></td>
-    <td><input type=\"number\" id=\"alapanyag_feherje\" name=\"alapanyag_feherje\"  step=\"0.01\"></td>
-    <td><input type=\"number\" id=\"alapanyag_zsir\" name=\"alapanyag_zsir\"  step=\"0.01\"></td>
-    <td><input type=\"number\" id=\"alapanyag_szenhidrat\" name=\"alapanyag_szenhidrat\"  step=\"0.01\"></td>
+    <td><input type=\"number\" class=\"form-control\" id=\"alapanyag_energia\" name=\"alapanyag_energia\"  step=\"0.000001\" required></td>
+    <td><input type=\"number\" class=\"form-control\" id=\"alapanyag_feherje\" name=\"alapanyag_feherje\"  step=\"0.000001\" required></td>
+    <td><input type=\"number\" class=\"form-control\" id=\"alapanyag_zsir\" name=\"alapanyag_zsir\"  step=\"0.000001\" required></td>
+    <td><input type=\"number\" class=\"form-control\" id=\"alapanyag_szenhidrat\" name=\"alapanyag_szenhidrat\"  step=\"0.000001\" required></td>
  </tr></table>
 
  
@@ -487,8 +504,14 @@ if ($jogom['alapanyagok'] == 1) {
 
 
     if (isset($_POST["alapanyag_neve"])) {
+
+
         $neve = " ";
         $neve = $_POST["alapanyag_neve"];
+        $neve = trim($neve);
+        $neve = stripslashes($neve);
+        $neve = htmlspecialchars($neve);
+        $neve = mb_strtolower ($neve, "UTF-8");
         $energia = $_POST["alapanyag_energia"];
         $feherje = $_POST["alapanyag_feherje"];
         $szenhidrat = $_POST["alapanyag_zsir"];
@@ -496,7 +519,7 @@ if ($jogom['alapanyagok'] == 1) {
 
         $mertek = $_POST["mertekegyseg"];
 
-        if (strlen($neve) > 5 && alapanyag_energia >= 0 && alapanyag_feherje >= 0 && alapanyag_zsir >= 0 && alapanyag_szenhidrat >= 0) {
+        if (strlen($neve) > 2 && $energia >= 0 && $feherje >= 0 && $zsir >= 0 && $szenhidrat >= 0) {
             $sql = "insert into alapanyagok  (neve,energia,feherje,szenhidrat,zsir) values ('$neve',$energia,$feherje,$szenhidrat,$zsir) ";
             $result = $conn->query($sql);
 
@@ -579,7 +602,7 @@ if ($jogom['alapanyagok'] == 1) {
 }
 if ($jogom['recept'] == 1) {
 
-    $stmt = $conn->prepare('SELECT recept.id as id, felhasznalok.username as szerzo, recept.neve as neve, recept.mikor as mikor FROM recept,felhasznalok where felhasznalok.id=recept.szerzo_id and hidden!=0 order by mikor');
+    $stmt = $conn->prepare('SELECT recept.id as id, felhasznalok.username as szerzo, recept.szerzo_id as szerzo_id , recept.neve as neve, recept.mikor as mikor FROM recept,felhasznalok where felhasznalok.id=recept.szerzo_id and hidden!=0 order by mikor');
     $stmt->execute();
     $result = $stmt->get_result();
     $receptek = array();
@@ -587,7 +610,7 @@ if ($jogom['recept'] == 1) {
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
 
-            array_push($receptek, array('id' => $row["id"], 'szerzo' => $row["szerzo"], 'neve' => $row["neve"], 'mikor' => $row["mikor"]));
+            array_push($receptek, array('id' => $row["id"], 'szerzo' => $row["szerzo"],'szerzo_id' => $row["szerzo_id"], 'neve' => $row["neve"], 'mikor' => $row["mikor"]));
         }
 
 
@@ -608,7 +631,7 @@ if ($jogom['recept'] == 1) {
             echo "
              <tr>
         <th scope=\"row\"> <a href='recept.php?id=" . $recept["id"] . "'>" . $recept["neve"] . "</a></th>
-        <td>" . $recept["szerzo"] . "</td>
+        <td><a href='profile.php?id=".$recept["szerzo_id"]."'>" . $recept["szerzo"] . "</a></td>
      <td>" . $recept["mikor"] . "</td>
       </tr>  ";
 
@@ -640,7 +663,7 @@ if ($jogom['kategoriak'] == 1) {
     <form method='post' action='kezeles.php'>
 
     <label for=\"rname\">Neve:</label>
-  <input type=\"text\" id=\"kategoria_neve\" name=\"kategoria_neve\">
+  <input type=\"text\" id=\"kategoria_neve\" name=\"kategoria_neve\" required   >
    <input type='submit' value='Hozzáadás'>
 
  </form>  
@@ -669,6 +692,10 @@ if ($jogom['kategoriak'] == 1) {
 
     if (isset($_POST["kategoria_neve"])) {
         $kategoria = $_POST["kategoria_neve"];
+        $kategoria = trim($kategoria);
+        $kategoria = stripslashes($kategoria);
+        $kategoria = htmlspecialchars($kategoria);
+
         $stmt = $conn->prepare('insert into kategoria (neve) values (?)');
         $stmt->bind_param('s', $kategoria);
 
@@ -690,6 +717,22 @@ if (isset($_POST["etlap_modositas"])) {
         $status = 1;
 
     }
+
+    $sq2 = "select id from uzenetek_ticket where felhasznalo_id=" . $_POST["szerzo_id"] . " and tema_id=0";
+    $y = $conn->query($sq2);
+    if ($y ->num_rows > 0) {
+        while($sor = $y >fetch_assoc()) {
+            $ticket_id=$sor['id'];
+            $ido=date("Y-m-d H:i:s");
+            if ($status=1){            $sq3 = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ($ticket_id,0,'Recepted felkerűlt az étlapra!', '$ido')";
+            }else{            $sq3 = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ($ticket_id,0,'Recepted lekerűlt az étlapról!', '$ido')";
+            }
+            $z = $conn->query($sq3);
+
+
+        }
+    }
+
     $sql = "UPDATE recept  set hidden =$status where id=" . $_POST["recept_az"] . "  ";
     $result = $conn->query($sql);
     echo '<script language="javascript">';
@@ -699,5 +742,9 @@ if (isset($_POST["etlap_modositas"])) {
 }
 
 
-$conn->close();
+$conn->close();}else{
+    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white'>hmmm... lehet eltévedtünk</font></h1></div>
+    ";
+}
 ?>

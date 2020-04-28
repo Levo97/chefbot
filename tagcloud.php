@@ -11,7 +11,7 @@
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
 
-            array_push($tags, array('weight' => $row["db"] * 10, 'tagname' => $row["neve"], 'id' => $row["id"]));
+            array_push($tags, array('weight' => $row["db"] * 50, 'tagname' => $row["neve"], 'id' => $row["id"]));
         }
 
     } else {
@@ -22,10 +22,20 @@
     echo "<div class='kozep' style='top: 2000px'>";
     foreach ($tags as $tag) {
 
-        $ret .= '<a style="font-size: ' . $tag['weight'] . 'px;" href="/chefbot/kereses.php?id=' . $tag['id'] . '">' . $tag['tagname'] . '</a>' . "\n";
+
+$szin="#".random_color();
+        $ret .= '<a style="color:'.$szin.'; font-size: ' . $tag['weight'] . 'px;" href="/chefbot/kereses.php?id=' . $tag['id'] . '" >' . $tag['tagname'] . '</a>' . "\n";
 
 
     }
+    function random_color_part() {
+        return str_pad( dechex( mt_rand( 150, 255 ) ), 2, '0', STR_PAD_LEFT);
+    }
+
+    function random_color() {
+        return random_color_part() . random_color_part() . random_color_part();
+    }
+
     echo $ret;
 
     ?>

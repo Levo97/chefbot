@@ -3,7 +3,7 @@ include_once 'include/db.con.php'
 ?>
 
 <!DOCTYPE html>
-<html lang="hun">
+<html lang="hu">
 <head>
     <title>ShéfBot</title>
     <meta charset="utf-8">
@@ -11,8 +11,28 @@ include_once 'include/db.con.php'
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     <nav class="navbar navbar-inverse">
-        <span style="font-size:30px;cursor:pointer; color:#eaeded " onclick="openNav()">&#9776;</span>
 
+        <?php if (isset($_SESSION["user"])) {
+
+            $felhasznalo = $_SESSION["id"];
+            $sql = "select count(*) as db FROM uzenetek,uzenetek_ticket where uzenetek_ticket.id=uzenetek.ticket_id and user_boolean !=1 and olvasott!=1 and felhasznalo_id=$felhasznalo ";
+            $result = $conn->query($sql);
+            $ertesites = array();
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+
+                    $ertesites = array_merge($ertesites, array('db' => $row["db"]));
+
+                }
+            } else {
+                $ertesites["db"] = 0;
+            }
+
+            echo " <span style=\"font-size:30px;cursor:pointer; color:#eaeded \" onclick=\"openNav()\">&#9776</span>"; if($ertesites["db"] >0){ echo"<span class='badge badge-primary badge-pill\'>" . $ertesites["db"] . " </span>";}
+        }else{
+            echo " <span style=\"font-size:30px;cursor:pointer; color:#eaeded \" onclick=\"openNav()\">&#9776";
+        } ?>
         <div class="container-fluid" style="float: right;">
             <div class="navbar-header" style>
                 <a class="navbar-brand" href="#">SéfBot
@@ -89,11 +109,11 @@ include_once 'include/db.con.php'
         }
 
         .doboz {
-            background-color: #eaeded;
-            border-radius: 5px 5px 5px 5px;
+            background-color: #c4c4c4;
+            border-radius: 50px 50px 50px 50px;
             margin-bottom: 2%;
             padding: 0.1% 2% 0.1% 2%;
-
+            color: #4b4a5a;
 
         }
 
@@ -166,18 +186,37 @@ include_once 'include/db.con.php'
             width: 40%; border-right:1px solid #c4c4c4;
         }
         .inbox_msg {
+
+            border-radius: 20px 20px 20px 20px;
             border: 1px solid #c4c4c4;
             clear: both;
             overflow: hidden;
         }
         .top_spac{ margin: 20px 0 0;}
 
+
+        .recent_heading {float: left; width:40%;}
+        .srch_bar {
+            display: inline-block;
+            text-align: right;
+            width: 60%;
+        }
+        .headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+
         .recent_heading h4 {
             color: #05728f;
             font-size: 21px;
             margin: auto;
         }
-
+        .srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
+        .srch_bar .input-group-addon button {
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+            border: medium none;
+            padding: 0;
+            color: #707070;
+            font-size: 18px;
+        }
+        .srch_bar .input-group-addon { margin: 0 0 0 -27px;}
 
         .chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
         .chat_ib h5 span{ font-size:13px; float:right;}
@@ -198,13 +237,11 @@ include_once 'include/db.con.php'
             margin: 0;
             padding: 18px 16px 10px;
         }
+        .inbox_chat { height: 550px; overflow-y: scroll;}
 
         .active_chat{ background:#ebebeb;}
 
-        .incoming_msg_img {
-            display: inline-block;
-            width: 6%;
-        }
+
         .received_msg {
             display: inline-block;
             padding: 0 0 0 10px;
@@ -212,9 +249,9 @@ include_once 'include/db.con.php'
             width: 92%;
         }
         .received_withd_msg p {
-            background: #ebebeb none repeat scroll 0 0;
+            background: #05728f none repeat scroll 0 0;
             border-radius: 3px;
-            color: #646464;
+            color: #fff;
             font-size: 14px;
             margin: 0;
             padding: 5px 10px 5px 12px;
@@ -229,7 +266,7 @@ include_once 'include/db.con.php'
         .received_withd_msg { width: 57%;}
         .mesgs {
             float: left;
-            padding: 30px 15px 0 25px;
+            padding: 46px 15px 0 25px;
             width: 60%;
         }
 
@@ -269,14 +306,19 @@ include_once 'include/db.con.php'
             top: 11px;
             width: 33px;
         }
-        .messaging { padding: 0 0 50px 0;
-            background-color: #eaeded;
-
-
-        }
+        .messaging { padding: 0 0 50px 0;}
         .msg_history {
             height: 516px;
             overflow-y: auto;
+        }a:link {
+             color: #85b9c4;
+             background-color: transparent;
+             text-decoration: none;
+         }
+        .doboz a:link{
+            color: rgb(15, 2, 79);
+            background-color: transparent;
+            text-decoration: none;
         }
 
     </style>
@@ -310,7 +352,7 @@ include_once 'include/db.con.php'
         <li><?php if (isset($_SESSION["user"])) {
 
                 echo "<font color='aliceblue' >Helló, " . $_SESSION['user'] . "! </font>";
-                echo "<a href='profile.php''>Profil</a>";
+                echo "<a href='profile.php'>Profil</a>";
             } ?></li>
         <li><?php if (isset($_SESSION["user"])) {
                 echo "<a href='ujrecept.php'>Új Recept</a>";
@@ -321,7 +363,7 @@ include_once 'include/db.con.php'
         <li><?php if (isset($_SESSION["user"])) {
 
                 $felhasznalo = $_SESSION["id"];
-                $sql = "SELECT count(*) as db FROM uzenetek_ticket where felhasznalo_id= $felhasznalo and closed!=1";
+                $sql = "select count(*) as db FROM uzenetek,uzenetek_ticket where uzenetek_ticket.id=uzenetek.ticket_id and user_boolean !=1 and olvasott!=1 and felhasznalo_id=$felhasznalo ";
                 $result = $conn->query($sql);
                 $ertesites = array();
 
@@ -333,9 +375,9 @@ include_once 'include/db.con.php'
                     }
                 } else {
                     $ertesites["db"] = 0;
-                }
-
-                echo "<a href='uzenetek.php'>Üzenetek <span class='badge badge-primary badge-pill\'>" . $ertesites["db"] . " </span></a>";
+                } echo "<a href='uzenetek.php'>Üzenetek";
+if ($ertesites["db"] >0){echo"<span class='badge badge-primary badge-pill\'>" . $ertesites["db"] . " </span>";}
+                echo"</a>";
             } ?></li>
 
         <li><?php if (isset($_SESSION["user"])) {
@@ -343,13 +385,27 @@ include_once 'include/db.con.php'
                 $sql = "SELECT * FROM jogok WHERE felhasznalok_id=" . $_SESSION["id"] . " ";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
-                    echo "<a href='kezeles.php'>Kezelés</a>";
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<a href='kezeles.php'>";echo "Kezelés"; if ($row["recept_moderate"]==1){
+                            $sq2 = "select count(*) as db FROM recept where  hidden=1";
+                            $result2 = $conn->query($sq2);
+                            if ($result2->num_rows > 0) {
+                                while ($row2 = $result2->fetch_assoc()) {
+                                    if ($row2["db"]>0){
+                                    echo"<span class='badge badge-primary badge-pill\'>" . $row2["db"] . " </span>";}
+                                }}
+                            } echo"</a>";
+
+
+                    }
 
                 }
 
             } ?></li>
 
-
+        <li><?php if (isset($_SESSION["user"])&& $_SESSION["id"]==2) {
+                echo "<a href='statistics.php'>Kimutatások</a>";
+            } ?></li>
         <li><a href='tagcloud.php'>Katalógus</a></li>
         <li><a href='points.php'>Ranglista</a></li>
         <li> <?php if (!isset($_SESSION["user"])) {

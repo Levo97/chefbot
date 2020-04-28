@@ -20,6 +20,8 @@ include_once 'include/db.con.php'
 <body>
 
 <?php
+
+
 $username = $email = $password =$logname =$logpass = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -34,6 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = test_input($_POST["email"]);
         $password = test_input($_POST["password"]);
         $hash = hash('sha256',$password);
+
+
+
 
         $sql = "select COUNT(username) as ertek from felhasznalok where username='$username' or email='$email'";
         $felhasznalok = $conn->query($sql);
@@ -66,6 +71,39 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         }else{
        if (!$specialChars2 || $username >= 6){
     if ($conn->query($sql) === TRUE) {
+
+
+$regisztralt_id=0;
+
+        $sql = "select id from felhasznalok where username='$username' and '$email'=email";
+        $x = $conn->query($sql);
+        if ($x->num_rows > 0) {
+            while($row = $x->fetch_assoc()) {
+                $regisztralt_id=$row['id'];
+                $sq2 = "insert into uzenetek_ticket (felhasznalo_id) values ($regisztralt_id)";
+                $y = $conn->query($sq2);
+
+
+
+                  }
+
+            $sq2 = "select id from uzenetek_ticket where felhasznalo_id=$regisztralt_id and tema_id=0";
+            $y = $conn->query($sq2);
+            if ($y ->num_rows > 0) {
+                while($sor = $y ->fetch_assoc()) {
+                    $ticket_id=$sor['id'];
+                    $ido=date("Y-m-d H:i:s");
+                    $sq3 = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ($ticket_id,0,'Üdv a ChefBot-on!', '$ido')";
+                    $z = $conn->query($sq3);
+
+
+                }
+                }
+        }
+
+
+
+
         echo '<script language="javascript">';
         echo 'alert("Sikeres regisztráció!");';
         echo '</script>';    }
@@ -84,7 +122,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 
 
-        $sq2 = "SELECT id, username, tiltott FROM felhasznalok WHERE '$loghash'=jelszo AND '$logname'=username";
+        $sq2 = "SELECT id, username,bejelentkezve, tiltott  FROM felhasznalok WHERE '$loghash'=jelszo AND '$logname'=username";
         $result = $conn->query($sq2);
 
         if ($result->num_rows > 0) {
@@ -93,8 +131,30 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $_SESSION["user"] = $row["username"];
                 $_SESSION["id"] = $row["id"];
                 $ido=date("Y-m-d H:i:s");
+
+if ($row["bejelentkezve"]==NULL ){
+                $y = $conn->query($sq2);
+                if ($y ->num_rows > 0) {
+                    while($sor = $y ->fetch_assoc()) {
+                        $ticket_id=$sor['id'];
+                        $sq3 = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ($ticket_id,0,'Üdv a ChefBot-on!', '$ido')";
+                        $z = $conn->query($sq3);
+
+
+                    }
+                }}
+
                 $sq2 = "Update  felhasznalok  set bejelentkezve='$ido' WHERE '$loghash'=jelszo AND '$logname'=username";
                 $result = $conn->query($sq2);
+
+                $uid=$_SESSION["id"];
+                $sq2 = "select id from uzenetek_ticket where felhasznalo_id=$uid and tema_id=0";
+
+
+
+
+
+
                 echo "<script>window.location.href = 'index.php';</script> ";
 
 

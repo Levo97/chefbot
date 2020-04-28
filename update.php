@@ -3,19 +3,46 @@ include_once 'include/menu.php'
 ?>
 <p style="color: white">
     <?php
-    $szekresztes=$_POST["szerkesztes"];
-
-    $nev = $_POST["nev"];
-    $leiras = $_POST["szoveg"];
-    $egyeb = $_POST["egyeb"];
-
-    $maxid = 0;
     $kategoriak=array();
-    $kategoriak= $_POST["kategoriak"];
 
     $hozzavalok=array();
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (empty($_POST["nev"])) {
+            echo "<script>window.location.href = 'sajat.php';</script> ";
+        } else {
+            $nev = test_input($_POST["nev"]);
+        }
 
-    $azonosito= (int) $_POST["azonosito"];
+        if (empty($_POST["egyeb"])) {
+            echo "<script>window.location.href = 'sajat.php';</script> ";
+        } else {
+            $egyeb = test_input($_POST["egyeb"]);
+        }
+
+
+
+        if (empty($_POST["azonosito"])) {
+            echo "<script>window.location.href = 'sajat.php';</script> ";
+        } else {
+            $azonosito = test_input($_POST["azonosito"]);
+        }
+    }
+
+    function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
+    $szekresztes=$_POST["szerkesztes"];
+    $kategoriak =($_POST["kategoriak"]);
+
+    $leiras = $_POST["szoveg"];
+
+    $maxid = 0;
+
+
 
 
 
@@ -47,6 +74,7 @@ include_once 'include/menu.php'
         $maxid=$_POST["szerkesztes"];
         $maxid = str_replace(' ', '', $maxid);
 
+if (file_exists($_FILES['fileToUpload']['tmp_name']) || is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
 
     $target_dir = "include/img/";
     $target_file = $target_dir . $maxid.".jpg";
@@ -83,7 +111,6 @@ include_once 'include/menu.php'
 // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-            clearstatcache();
                 $uid=$_SESSION['id'];
                 if (strlen($egyeb)<2){
 
@@ -106,9 +133,34 @@ include_once 'include/menu.php'
                         $result = $conn->query($sql);
                     }
                 }
-             } else {
-            echo "Sorry, there was an error uploading your file.";
+            echo "<script>window.location.href = 'index.php';</script> ";
+        } else {
+            echo "Egy hiba volt a folyamatban";
         }
-    }
+    }}else {
+    $uid=$_SESSION['id'];
+    if (strlen($egyeb)<2){
+
+        $sql = "UPDATE recept SET neve = '$nev', leiras = '$leiras',missing_data = null WHERE id=$maxid;";
+
+    }else{  $sql = "UPDATE recept SET neve = '$nev', leiras = '$leiras',missing_data = $egyeb WHERE id=$maxid;";}
+    if ($conn->multi_query($sql) === TRUE) {
+        $sql = "delete from  hozzavalok where  recept_id=$maxid;";
+        $result = $conn->query($sql);
+        $sql = "delete from  kategoriak where  recept_id=$maxid;";
+        $result = $conn->query($sql);
+
+        foreach ($hozzavalok as $hozzavalo){
+            $sql = "INSERT INTO hozzavalok  (recept_id, alapanyag_id, mennyiseg)VALUES (".$maxid.",".$hozzavalo['hozzavalo_id'].",".$hozzavalo['mennyiseg'].")";
+            $result = $conn->query($sql);
+
+        }
+        for ($i=0; $i < (count($kategoriak)); $i++ ){
+            $sql = "INSERT INTO kategoriak  (kategoria_id, recept_id)VALUES (".$kategoriak[$i].",".$maxid." )";
+            $result = $conn->query($sql);
+        }
+    }            echo "<script>window.location.href = 'index.php';</script> ";
+
+}
     ?>
 </p>

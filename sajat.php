@@ -1,5 +1,6 @@
 <?php
 include_once 'include/menu.php';
+if (isset($_SESSION["id"])){
 
 $uid = $_SESSION['id'];
 
@@ -17,15 +18,24 @@ if ($result->num_rows > 0) {
                             <div class='col-sm-10'>
                                 <h1>" . $row["neve"] . "</h1>
                                 <h5>" . $row["mikor"] . "</h5>
+                                 <form method='post' action='szerkesztes.php'>
+   
+   <button id=\"recept_az\" name=\"recept_az\" type=\"submit\" class=\"btn btn-primary\" value='" . $row["id"] . " '>Szerkesztés</button></form>
                             </div>
                             </a>
                         </div>
                         </div>";
     }
 } else {
-    echo "Nincs találat";
+    echo"<div align='middle'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white'>hmmm... úgy néz ki még nincs recepted</font></h1></div>";
+
 }
 
 $conn->close();
-
+} else {
+    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white'>hmmm... valami nincs itt rendben</font></h1></div>
+    ";
+}
 ?>

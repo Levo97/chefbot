@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/kezeles.php" description="$stmt = $conn-&gt;prepare('SELECT * FROM jogok where ..." line="5" />
+    <bookmark url="file://$PROJECT_DIR$/kezeles.php" description="$stmt = $conn-&gt;prepare('SELECT * FROM jogok where ..." line="12" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b11d7030-047c-4eb4-a677-982d4f61209c" name="Default" comment="" />
@@ -49,37 +49,38 @@
     <session id="-1193558447">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="35" />
+          <entry key="project.closed" value="45" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.10" value="5" />
+          <entry key="project.open.time.10" value="6" />
+          <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.6" value="3" />
-          <entry key="project.open.time.7" value="11" />
+          <entry key="project.open.time.7" value="15" />
           <entry key="project.open.time.8" value="10" />
-          <entry key="project.open.time.9" value="5" />
-          <entry key="project.opened" value="35" />
+          <entry key="project.open.time.9" value="10" />
+          <entry key="project.opened" value="46" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="html" value="1" />
-          <entry key="php" value="60" />
+          <entry key="html" value="2" />
+          <entry key="php" value="94" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="1" />
-          <entry key="PHP" value="60" />
+          <entry key="HTML" value="2" />
+          <entry key="PHP" value="94" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="php" value="19080" />
+          <entry key="php" value="25874" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="313" />
-          <entry key="PHP" value="18766" />
+          <entry key="HTML" value="367" />
+          <entry key="PHP" value="25506" />
           <entry key="SQL" value="1" />
         </counts>
       </usages-collector>
@@ -91,31 +92,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/menu.php">
+        <entry file="file://$PROJECT_DIR$/update.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="323" column="115" selection-start-line="323" selection-start-column="115" selection-end-line="323" selection-end-column="115" />
+            <state relative-caret-position="1292">
+              <caret line="76" column="112" selection-start-line="76" selection-start-column="112" selection-end-line="76" selection-end-column="112" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/kezeles.php">
+        <entry file="file://$PROJECT_DIR$/upload.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="550" column="56" lean-forward="true" selection-start-line="550" selection-end-line="551" />
-              <folding>
-                <element signature="n#style#0;n#h3#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/uzenetek.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="301" selection-start-line="3" selection-start-column="301" selection-end-line="3" selection-end-column="301" />
+            <state relative-caret-position="357">
+              <caret line="21" selection-start-line="21" selection-end-line="21" />
             </state>
           </provider>
         </entry>
@@ -123,8 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/login.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="863">
-              <caret line="94" column="16" lean-forward="true" selection-start-line="94" selection-end-line="95" />
+            <state relative-caret-position="605">
+              <caret line="92" column="33" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
               <folding>
                 <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
               </folding>
@@ -133,33 +122,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sajat.php">
+        <entry file="file://$PROJECT_DIR$/tagcloud.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/szerkesztes.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
-              <caret line="124" column="42" lean-forward="true" selection-start-line="124" selection-start-column="23" selection-end-line="124" selection-end-column="42" />
+            <state relative-caret-position="527">
+              <caret line="31" column="42" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="43" />
               <folding>
-                <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/update.php">
+        <entry file="file://$PROJECT_DIR$/sajat.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1122">
-              <caret line="66" selection-start-line="66" selection-end-line="66" />
+            <state relative-caret-position="374">
+              <caret line="22" column="110" selection-start-line="22" selection-start-column="110" selection-end-line="22" selection-end-column="110" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ujrecept.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="24" column="336" selection-start-line="24" selection-start-column="336" selection-end-line="24" selection-end-column="336" />
             </state>
           </provider>
         </entry>
@@ -167,23 +154,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/recept.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="214" lean-forward="true" selection-start-line="214" selection-end-line="214" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/profile.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1758">
-              <caret line="114" lean-forward="true" selection-start-line="114" selection-end-line="114" />
+            <state relative-caret-position="1190">
+              <caret line="70" selection-start-line="70" selection-end-line="72" selection-end-column="144" />
             </state>
           </provider>
         </entry>
@@ -191,8 +163,30 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="918">
-              <caret line="54" column="55" selection-start-line="54" selection-start-column="55" selection-end-line="54" selection-end-column="55" />
+            <state relative-caret-position="1666">
+              <caret line="98" column="45" selection-start-line="98" selection-start-column="45" selection-end-line="98" selection-end-column="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/include/menu.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="731">
+              <caret line="317" column="9" selection-start-line="317" selection-start-column="9" selection-end-line="317" selection-end-column="9" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/statistics.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="24" column="47" selection-start-line="24" selection-start-column="47" selection-end-line="24" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -201,22 +195,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>keres</find>
-      <find>bejelen</find>
-      <find>out</find>
-      <find>upload</find>
-      <find>szerzo_id</find>
-      <find>doboz</find>
-      <find>body</find>
-      <find>script</find>
-      <find>alapanyag</find>
-      <find>consol</find>
-      <find>recent_heading</find>
-      <find>srch_bar</find>
-      <find>headind_srch</find>
-      <find>messaging</find>
-      <find>chat_list active_chat</find>
-      <find>inbox_</find>
+      <find>mesgs</find>
+      <find>png</find>
+      <find>/</find>
+      <find>elem</find>
+      <find>msg_history</find>
+      <find>link</find>
+      <find>carousel-control</find>
+      <find>myCarousel</find>
+      <find>move_uploaded_file</find>
+      <find>fileToUpload</find>
+      <find>azonosito</find>
+      <find>kategoriak</find>
+      <find>kateg</find>
+      <find>dobo</find>
+      <find>ech</find>
+      <find>#85b9c4</find>
+      <find>select</find>
+      <find>form-</find>
+      <find>selectpicker</find>
+      <find>neve</find>
+      <find>test_input</find>
+      <find>text</find>
+      <find>img</find>
+      <find>szerk</find>
+      <find>szerke</find>
+      <find>wid</find>
+      <find>profile</find>
+      <find>profil</find>
+      <find>profi</find>
+      <find>viewport</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -231,26 +239,27 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/include/db.con.php" />
-        <option value="$PROJECT_DIR$/reszletes.php" />
         <option value="$PROJECT_DIR$/sarch.php" />
         <option value="$PROJECT_DIR$/search.php" />
-        <option value="$PROJECT_DIR$/kereses.php" />
         <option value="$PROJECT_DIR$/asda.php" />
-        <option value="$PROJECT_DIR$/points.php" />
-        <option value="$PROJECT_DIR$/tagcloud.php" />
-        <option value="$PROJECT_DIR$/kezeles.php" />
         <option value="$PROJECT_DIR$/like.php" />
+        <option value="$PROJECT_DIR$/uzenetek.php" />
+        <option value="$PROJECT_DIR$/profile.php" />
+        <option value="$PROJECT_DIR$/reszletes.php" />
+        <option value="$PROJECT_DIR$/points.php" />
+        <option value="$PROJECT_DIR$/kereses.php" />
+        <option value="$PROJECT_DIR$/szerkesztes.php" />
         <option value="$PROJECT_DIR$/ujrecept.php" />
+        <option value="$PROJECT_DIR$/recept.php" />
+        <option value="$PROJECT_DIR$/sajat.php" />
+        <option value="$PROJECT_DIR$/index.php" />
+        <option value="$PROJECT_DIR$/kezeles.php" />
         <option value="$PROJECT_DIR$/upload.php" />
         <option value="$PROJECT_DIR$/update.php" />
-        <option value="$PROJECT_DIR$/index.php" />
-        <option value="$PROJECT_DIR$/include/menu.php" />
+        <option value="$PROJECT_DIR$/statistics.php" />
         <option value="$PROJECT_DIR$/login.php" />
-        <option value="$PROJECT_DIR$/sajat.php" />
-        <option value="$PROJECT_DIR$/szerkesztes.php" />
-        <option value="$PROJECT_DIR$/profile.php" />
-        <option value="$PROJECT_DIR$/recept.php" />
-        <option value="$PROJECT_DIR$/uzenetek.php" />
+        <option value="$PROJECT_DIR$/tagcloud.php" />
+        <option value="$PROJECT_DIR$/include/menu.php" />
       </list>
     </option>
   </component>
@@ -357,11 +366,22 @@
       <workItem from="1587378356986" duration="18779000" />
       <workItem from="1587488536423" duration="8551000" />
       <workItem from="1587498710914" duration="2480000" />
+      <workItem from="1587569187440" duration="11457000" />
+      <workItem from="1587591633000" duration="3317000" />
+      <workItem from="1587632196660" duration="461000" />
+      <workItem from="1587665306387" duration="10868000" />
+      <workItem from="1587727488288" duration="19418000" />
+      <workItem from="1587758037313" duration="564000" />
+      <workItem from="1587818433404" duration="5874000" />
+      <workItem from="1587827430766" duration="14434000" />
+      <workItem from="1587899377947" duration="2096000" />
+      <workItem from="1587975843861" duration="26939000" />
+      <workItem from="1588097841380" duration="1466000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="211601000" />
+    <option name="totallyTimeSpent" value="308495000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -374,8 +394,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09375" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12760417" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -404,13 +425,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/reszletes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/logout.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -430,6 +444,32 @@
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$EXa8632.32485/startbootstrap-business-casual-gh-pages/index.html" />
     <entry file="file://$PROJECT_DIR$/asda.php" />
+    <entry file="file://$PROJECT_DIR$/like.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/Új mappa (4)/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-164" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uzenetek.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="100" selection-start-line="27" selection-start-column="58" selection-end-line="27" selection-end-column="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/profile.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2414">
+          <caret line="142" column="10" selection-start-line="142" selection-start-column="10" selection-end-line="142" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/include/db.con.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -439,130 +479,116 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/points.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="37" column="87" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="87" />
+        <state relative-caret-position="646">
+          <caret line="38" column="76" selection-start-line="38" selection-start-column="76" selection-end-line="38" selection-end-column="76" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/kereses.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="32" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="62" />
+        <state relative-caret-position="153">
+          <caret line="9" column="36" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tagcloud.php">
+    <entry file="file://$PROJECT_DIR$/szerkesztes.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="45" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="45" />
+        <state relative-caret-position="646">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/like.php">
+    <entry file="file://$PROJECT_DIR$/reszletes.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ujrecept.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2601">
-          <caret line="153" column="6" selection-start-line="153" selection-start-column="6" selection-end-line="163" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upload.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1309">
-          <caret line="77" column="5" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/update.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1122">
-          <caret line="66" selection-start-line="66" selection-end-line="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="54" column="55" selection-start-line="54" selection-start-column="55" selection-end-line="54" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/menu.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="323" column="115" selection-start-line="323" selection-start-column="115" selection-end-line="323" selection-end-column="115" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sajat.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="-1785">
+          <caret line="27" column="45" lean-forward="true" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/kezeles.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="550" column="56" lean-forward="true" selection-start-line="550" selection-end-line="551" />
-          <folding>
-            <element signature="n#style#0;n#h3#0;n#!!top" expanded="true" />
-          </folding>
+        <state>
+          <caret selection-end-line="1" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/update.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1292">
+          <caret line="76" column="112" selection-start-line="76" selection-start-column="112" selection-end-line="76" selection-end-column="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upload.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sajat.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="110" selection-start-line="22" selection-start-column="110" selection-end-line="22" selection-end-column="110" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ujrecept.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="336" selection-start-line="24" selection-start-column="336" selection-end-line="24" selection-end-column="336" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/recept.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1190">
+          <caret line="70" selection-start-line="70" selection-end-line="72" selection-end-column="144" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1666">
+          <caret line="98" column="45" selection-start-line="98" selection-start-column="45" selection-end-line="98" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/statistics.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="47" selection-start-line="24" selection-start-column="47" selection-end-line="24" selection-end-column="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/login.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="863">
-          <caret line="94" column="16" lean-forward="true" selection-start-line="94" selection-end-line="95" />
+        <state relative-caret-position="605">
+          <caret line="92" column="33" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
           <folding>
             <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/profile.php">
+    <entry file="file://$PROJECT_DIR$/tagcloud.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1758">
-          <caret line="114" lean-forward="true" selection-start-line="114" selection-end-line="114" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/recept.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="214" lean-forward="true" selection-start-line="214" selection-end-line="214" />
+        <state relative-caret-position="527">
+          <caret line="31" column="42" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="43" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/szerkesztes.php">
+    <entry file="file://$PROJECT_DIR$/include/menu.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="124" column="42" lean-forward="true" selection-start-line="124" selection-start-column="23" selection-end-line="124" selection-end-column="42" />
+        <state relative-caret-position="731">
+          <caret line="317" column="9" selection-start-line="317" selection-start-column="9" selection-end-line="317" selection-end-column="9" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uzenetek.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="301" selection-start-line="3" selection-start-column="301" selection-end-line="3" selection-end-column="301" />
         </state>
       </provider>
     </entry>

@@ -1,14 +1,17 @@
 <?php
 include_once 'include/menu.php';
+if (isset($_SESSION["id"])){
 $felhasznalo = $_SESSION["id"];
-$sql = "SELECT uzenetek_ticket.id as ticket_id, uzenetek.id as uzenet_id, uzenetek_temak.tema, uzenetek.uzenet as uzenet FROM uzenetek_ticket,uzenetek_temak, uzenetek where uzenetek_ticket.tema_id=uzenetek_temak.ID and uzenetek.ticket_id=uzenetek_ticket.id and closed=0 and felhasznalo_id=$felhasznalo GROUP BY ticket_id,uzenet_id ";
+$sql = "SELECT x.id as uzenet_id,x.ticket_id as ticket_id,z.tema as tema ,x.user_boolean as user_boolean,x.uzenet as uzenet,x.mikor as mikor,x.olvasott as olvasott
+FROM uzenetek as x, uzenetek_ticket as y , uzenetek_temak as z
+where x.ticket_id=y.id and z.ID=y.tema_id and  y.felhasznalo_id=$felhasznalo  order by tema,mikor desc";
 $result = $conn->query($sql);
-$beszelgetesek = array();
+$uzenetek = array();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
-        array_push($beszelgetesek, array('id' => $row["id"], 'tema' => $row["tema"]));
+        array_push($uzenetek, array('uzenet_id' => $row["uzenet_id"], 'ticket_id' => $row["ticket_id"], 'user_boolean' => $row["user_boolean"], 'uzenet' => $row["uzenet"], 'mikor' => $row["mikor"], 'olvasott' => $row["olvasott"], 'tema' => $row["tema"]));
     }
 }
 
@@ -16,71 +19,93 @@ if ($result->num_rows > 0) {
 echo "
 <style>
 body {
-background-color: #eaeded;
+background-color: #60929c;
 }
 </style>
-
-<div >
-<div >
+<body>
+<div class=\"container\">
 <div class=\"messaging\">
-      <div class=\"inbox_msg\">
+      <div class=\"inbox_msg\" style='border-style: solid; border-width: 7px; border-color: #818181;'>
         <div class=\"inbox_people\">
-           <div >
-            <div class=\"chat_list active_chat\">
-              <div class=\"chat_people\">
-                <div class=\"chat_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>
-                <div class=\"chat_ib\">
-                  <h5>ChefBot - értesítések <span class=\"chat_date\">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
+          <div class=\"headind_srch\" style='background-color: #ced1d8; border-style: solid; border-width: 7px; border-color: #818181;'>
+            <div class=\"recent_heading\">
+              <h4>Üzenetek</h4>
+            </div>
+            <div class=\"srch_bar\">
+              <div class=\"stylish-input-group\">
+                <input type=\"text\" class=\"search-bar\"  placeholder=\"Search\" >
+                <button type=\"button\"> <i class=\"fa fa-search\" aria-hidden=\"true\"></i> </button>
+                </span> </div>
+            </div>
+          </div>
+          <div class=\"inbox_chat\" style=\"background-color: #ced1d8; border-style: solid; border-width: 7px; border-color: #818181\">";
+$kategoriak=array();
+    $kategoriak[0][0]=$uzenetek[0]["tema"];
+    $kategoriak[0][1]=0;
+$kategoria_szamlalo=0;
+    $tema=$uzenetek[0]["tema"];
+
+
+for ($i=1;$i < count($uzenetek);$i++){
+if ($tema != $uzenetek[$i]["tema"]){
+    $tema=$uzenetek[$i]["tema"];
+    $kategoria_szamlalo++;
+    $kategoriak[$kategoria_szamlalo][0]=$uzenetek[$i]["tema"];
+    $kategoriak[$kategoria_szamlalo][1]=$i;
+
+
+}
+}
+
+for($i=0;$i < count($kategoriak);$i++){
+echo" <form method='post' action='uzenetek.php'><button  type=\"submit\"  id=\"uzenet\" name=\"uzenet\"   value='";echo $kategoriak[$i][0]; echo"'> <div class=\"chat_people\">";
+ if($i==0){echo " <div >";} else{ echo"<div >";} echo"
+           
+                <div class=\"chat_img\"> <img src=\"include/img/logo.png\" alt=\"sunil\"> </div>
+                <div class=\"chat_ib\">";
+                 if ($uzenetek[$kategoriak[$i][1]]["olvasott"]==0){echo"<h5 style=\"color:red;\">";}else{echo "<h5>";}
+                 echo "ChefBot - ".$kategoriak[$i][0]." <span class=\"chat_date\">"; echo $uzenetek[$kategoriak[$i][1]]["mikor"] ; echo"</span></h5>";
+
+    echo"      <p>";  echo substr($uzenetek[$kategoriak[$i][1]]["uzenet"],0,100);echo"..";  echo"</p>
                 </div>
               </div>
-            </div>
-            
-            
-            
-          </div>
-        </div>
-        <div class=\"mesgs\">
-          <div class=\"msg_history\">
-            <div class=\"incoming_msg\">
-              <div class=\"incoming_msg_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>
-              <div class=\"received_msg\">
-                <div class=\"received_withd_msg\">
-                  <p>Test which is a new approach to have all
-                    solutions</p>
-                  <span class=\"time_date\"> 11:01 AM    |    June 9</span></div>
-              </div>
-            </div>
-            <div class=\"outgoing_msg\">
-              <div class=\"sent_msg\">
-                <p>Test which is a new approach to have all
-                  solutions</p>
-                <span class=\"time_date\"> 11:01 AM    |    June 9</span> </div>
-            </div>
-            <div class=\"incoming_msg\">
-              <div class=\"incoming_msg_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>
-              <div class=\"received_msg\">
-                <div class=\"received_withd_msg\">
-                  <p>Test, which is a new approach to have</p>
-                  <span class=\"time_date\"> 11:01 AM    |    Yesterday</span></div>
-              </div>
-            </div>
-            <div class=\"outgoing_msg\">
-              <div class=\"sent_msg\">
-                <p>Apollo University, Delhi, India Test</p>
-                <span class=\"time_date\"> 11:01 AM    |    Today</span> </div>
-            </div>
-            <div class=\"incoming_msg\">
-              <div class=\"incoming_msg_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>
-              <div class=\"received_msg\">
-                <div class=\"received_withd_msg\">
-                  <p>We work directly with our designers and suppliers,
-                    and sell direct to you, which means quality, exclusive
-                    products, at a price anyone can afford.</p>
-                  <span class=\"time_date\"> 11:01 AM    |    Today</span></div>
-              </div>
-            </div>
+            </div></button></form>
+        
+        ";}
+echo "   </div>
+        </div><div class=\"mesgs\" style='background-color: #ced1d8'>
+          <div class=\"msg_history\">";
+            if (isset($_POST["uzenet"])){
+              $tema_post= $_POST["uzenet"];
+
+
+                $sql = "SELECT x.id as uzenet_id,x.ticket_id as ticket_id,z.tema as tema ,x.user_boolean as user_boolean,x.uzenet as uzenet,x.mikor as mikor,x.olvasott as olvasott
+FROM uzenetek as x, uzenetek_ticket as y , uzenetek_temak as z
+where x.ticket_id=y.id and z.ID=y.tema_id and  y.felhasznalo_id=$felhasznalo and tema like '$tema_post' order by mikor ";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $uzenet_id=$row["uzenet_id"];
+                        $sql = " UPDATE  uzenetek set olvasott=1 where id=$uzenet_id  and user_boolean=0";
+                        $update = $conn->query($sql);
+
+if ($row["user_boolean"]==0){echo"<div class=\"incoming_msg\"><div class=\"received_msg\"> <div class=\"received_withd_msg\">";}else{echo"<div class=\"outgoing_msg\"><div class=\"sent_msg\">"; }
+             echo" 
+                  <p>".$row["uzenet"]."</p>
+                  <span class=\"time_date\">".$row["mikor"]."</span></div>
+              </div>";
+       if ($row["user_boolean"]==0){ echo"   </div>";}
+
+
+                    }
+                }
+
+            }else{
+echo "<div align='middle'>  <img src='include/img/postman.png' > </div>";
+            }
+
+          echo" 
+          
           </div>
           <div class=\"type_msg\">
             <div class=\"input_msg_write\">
@@ -92,4 +117,8 @@ background-color: #eaeded;
       </div>
       
             
-    </div></div>";
+    </div></div>"; }else{
+    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white'>hmmm... lehet eltévedtünk</font></h1></div>
+    ";
+}

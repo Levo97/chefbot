@@ -1,5 +1,7 @@
 <?php
-include_once 'include/menu.php'
+include_once 'include/menu.php';
+
+if (isset($_SESSION["id"])){
 ?>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
@@ -16,11 +18,11 @@ include_once 'include/menu.php'
     <h1 align="center">Új recept létrehozása</h1>
     <form action="upload.php" method="post" enctype="multipart/form-data">
         <h3>Add meg a recepted nevét:</h3>
-        <input type="text" id="nev" name="nev" maxlength="20" placeholder="Recept neve"><br>
+        <input type="text" id="nev" name="nev" maxlength="50" placeholder="Recept neve" required><br>
         <img src='include/img/ujrecept.png' style=" max-width:500px; " align="right">
 
         <?php
-        $sql = "SELECT alapanyagok_id,mertekegyseg_id , mertekegyseg.neve as mertekegyseg_neve, alapanyagok.neve as alapanyag_neve FROM alapanyagok_meretekegyseg,mertekegyseg, alapanyagok where mertekegyseg.id=alapanyagok_meretekegyseg.mertekegyseg_id and alapanyagok_meretekegyseg.alapanyagok_id=alapanyagok.id ";
+        $sql = "SELECT alapanyagok_id,mertekegyseg_id , mertekegyseg.neve as mertekegyseg_neve, alapanyagok.neve as alapanyag_neve FROM alapanyagok_meretekegyseg,mertekegyseg, alapanyagok where mertekegyseg.id=alapanyagok_meretekegyseg.mertekegyseg_id and alapanyagok_meretekegyseg.alapanyagok_id=alapanyagok.id order by alapanyag_neve   ";
         $result = $conn->query($sql);
         $alapanyagok = array();
 
@@ -52,7 +54,7 @@ include_once 'include/menu.php'
 
         <div id="hozzavalok" class="form-group">
             <div id="hozzavalo">
-                <select id="alapanyag" name="1" onchange="frissit(0)" class="form-control">
+                <select id="alapanyag" name="1" onchange="frissit(0)" class="form-control" required>
                     <option disabled selected value> Válassz...</option>
                     <?php
 
@@ -74,8 +76,7 @@ include_once 'include/menu.php'
 
 
         <h3>Kategóriák:</h3>
-        <select data-live-search="true" data-live-search-style="startsWith" class="selectpicker" multiple
-                name="kategoriak[]">
+        <select data-live-search="true" data-live-search-style="startsWith" class="selectpicker" multiple name="kategoriak[]" required>
             <?php
 
             foreach ($kategoriak as $kategoria) {
@@ -107,6 +108,7 @@ include_once 'include/menu.php'
             document.getElementsByTagName("textarea")[0].setAttribute("class", "form-control");
             document.getElementsByTagName("textarea")[0].setAttribute("id", "text1");
             document.getElementsByTagName("textarea")[0].setAttribute("name", "text1");
+            document.getElementsByTagName("textarea")[0].setAttribute("required", "");
 
             var darab = 1;
 
@@ -294,3 +296,8 @@ include_once 'include/menu.php'
 </div>
 </body>
 </html>
+    <?php }else{
+    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white'>hmmm... lehet eltévedtünk</font></h1></div>
+    ";
+}

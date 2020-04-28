@@ -5,7 +5,9 @@ include_once 'include/menu.php'
 $keres="";
 if(isset($_POST["keres"])){
     $keres = $_POST["keres"];
-
+    $keres = trim($keres);
+    $keres = stripslashes($keres);
+    $keres = htmlspecialchars($keres);
 }    $sql = "SELECT id,neve,mikor FROM recept Where LOWER(neve) like LOWER('%$keres%') ORDER BY mikor";
 
 if(isset($_GET["id"])){
