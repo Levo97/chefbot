@@ -102,82 +102,108 @@ if ($result2->num_rows > 0) {
         }
 
     }
+    sort($alapanyagok);
 
-    $rendezett_alapanyagok = array();
-    $rendezett_kategoriak = array();
-    $szamlalo=1;
-    foreach ($alapanyagok as $alapanyag){
+    sort($kategoriak);
 
-        if ($alapanyag!=NULL && $alapanyag >0){
-        while ($alapanyag!=$szamlalo){
-            $szamlalo++;
 
-        } array_push($rendezett_alapanyagok,$szamlalo); $szamlalo=1; }
-    }
-    $szamlalo=1;
-    foreach ($kategoriak as $kategoria){
-        if ($kategoria > 0){
-            while ($kategoria!=$szamlalo){
-                $szamlalo++;
+        $egyezes=array();
+    //Logaritmikus keresés
 
-            }  array_push($rendezett_kategoriak,$szamlalo); $szamlalo=1; }
+       function binaryKereses(Array $arr, $elso, $utolso, $x){
+            if ($utolso < $elso)
+                return -1;
 
-    }
+            $mid = floor(($utolso + $elso)/2);
+            if ($arr[$mid][1] == $x) {
+                return $mid;
 
-    $egyezes=array();
-//Logaritmikus keresés
+            }elseif ($arr[$mid][1] > $x) {
 
-   function binaryKereses(Array $arr, $elso, $utolso, $x){
-        if ($utolso < $elso)
-            return 0;
-
-        $mid = floor(($utolso + $elso)/2);
-        if ($arr[$mid][1] == $x)
-            return $arr[$mid][0];
-
-        elseif ($arr[1] > $x) {
-
-            return binaryKereses($arr, $elso, $mid - 1, $x);
-        }
-        else {
-
-            return binaryKereses($arr, $mid + 1, $utolso, $x);
-        }
-    }
-
-foreach ($rendezett_kategoriak as $rendezett_kategoria){
-        $arr =$kategoriak_lekerdezes;
-        $value = $rendezett_kategoria;
-            $eredmeny= binaryKereses($arr, 0, count($arr)-1 , $value);
-            echo $eredmeny;
-            if ($eredmeny>0){
-               if (isset($egyezes["$eredmeny"])){ $egyezes["$eredmeny"]=$egyezes["$eredmeny"]+1 ;}else{
-                   $egyezes["$eredmeny"]=1 ;
-               }
+                return binaryKereses($arr, $elso, $mid - 1, $x);
             }
+            else {
 
-}
-
-foreach ($rendezett_alapanyagok as $rendezett_alapanyag){
-    $arr =$alapanyagok_lekerdezes;
-    $value = $rendezett_alapanyag;
-    $eredmeny= binaryKereses($arr, 0, count($arr)-1 , $value);
-    if ($eredmeny>0){
-        if (isset($egyezes["$eredmeny"])){ $egyezes["$eredmeny"]=$egyezes["$eredmeny"]+1 ;}else{
-            $egyezes["$eredmeny"]=1 ;
+                return binaryKereses($arr, $mid + 1, $utolso, $x);
+            }
         }
+
+    $arr =$kategoriak_lekerdezes;
+
+    foreach ($kategoriak as $rendezett_kategoria){
+            $value = $rendezett_kategoria;
+        $eredmeny=0;
+        $talalat=0;
+        while ($talalat!=-1)    {    $talalat= binaryKereses($arr, 0, count($arr)-1 , $value);
+
+                if ($talalat!=-1){
+
+                    $eredmeny=$arr[$talalat][0];
+                    $arr[$talalat][1]=0;
+
+
+                    if (isset($egyezes["$eredmeny"])){ $egyezes["$eredmeny"]=$egyezes["$eredmeny"]+1 ;}else{
+                        $egyezes["$eredmeny"]=1 ;
+                    }
+                }}
     }
 
-}
-asort($egyezes);
+    $arr =$alapanyagok_lekerdezes;
+
+    foreach ($alapanyagok as $rendezett_alapanyag){
+        $value = $rendezett_alapanyag;
+        $eredmeny=0;
+        $talalat=0;
+        while ($talalat!=-1)    {    $talalat= binaryKereses($arr, 0, count($arr)-1 , $value);
+
+            if ($talalat!=-1){
+
+                $eredmeny=$arr[$talalat][0];
+                $arr[$talalat][1]=0;
+
+
+                if (isset($egyezes["$eredmeny"])){ $egyezes["$eredmeny"]=$egyezes["$eredmeny"]+1 ;}else{
+                    $egyezes["$eredmeny"]=1 ;
+                }
+            }}
+    }
+
+
+/*
+    $sql = "SELECT id as id,neve,mikor FROM recept,kategoriak where kategoriak.recept_id=recept.id  and kategoriak.kategoria_id='$id'";
+    $result = $conn->query($sql);
+
+    echo "<h3 style=\"color: white\">Ezeket találtuk:</h3>";
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            echo "<div class='doboz '>
+                        <div class='row'>
+                        <a href='recept.php?id=".$row["id"]."'>
+                            <div class='col-sm-2'>
+                                <img class='img-fluid' src='include/img/".$row["id"].".jpg'>
+                            </div>
+                            <div class='col-sm-10'>
+                                <h1>".$row["neve"]."</h1>
+                                <h5>".$row["mikor"]."</h5>
+                            </div>
+                            </a>
+                        </div>
+                        </div>";
+        }
+    } else {
+        echo "Nincs találat";
+    }*/
+
+
+        echo " <div class=\"doboz\"  >";
+    arsort($egyezes);
 var_dump($egyezes);
-    echo " <div class=\"doboz\"  >";
 
 
 
-key();
 
- 
+
+
  
  echo"</div>";
 

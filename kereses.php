@@ -25,7 +25,7 @@ if ($result->num_rows > 0) {
                         <div class='row'>
                         <a href='recept.php?id=".$row["id"]."'>
                             <div class='col-sm-2'>
-                                <img class='img-fluid' src='include/img/".$row["id"].".jpg'>
+                               <img class='img-fluid' src='include/img/".$row["id"].".jpg' style='max-height:200px; max-width:300px;'>
                             </div>
                             <div class='col-sm-10'>
                                 <h1>".$row["neve"]."</h1>
