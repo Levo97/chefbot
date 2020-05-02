@@ -41,10 +41,10 @@ if ($result->num_rows > 0) {
 <table  >
   <tr>  
   
-  <th>   <input  class=\"form-control\" type=\"text\" id=\"nev\" name=\"nev\" maxlength=\"20\" placeholder=\"Recept neve (opcionális)\"></th>
+  <th>   <input  class=\"form-control\" type=\"text\" id=\"nev\" name=\"nev\" maxlength=\"20\" placeholder=\"Recept neve (opcionális)\" pattern=\".{3,}\"></th>
  
   <th>
-    <select data-live-search=\"true\" data-live-search-style=\"startsWith\" class=\"selectpicker form-control\" multiple name=\"adatok[]\" >
+    <select data-live-search=\"true\" data-live-search-style=\"startsWith\" class=\"selectpicker form-control\" multiple name=\"adatok[]\" required >
     <optgroup label=\"Hozzávalók\">";
 while ($row = $result->fetch_assoc()) {
 
@@ -169,43 +169,60 @@ if ($result2->num_rows > 0) {
     }
 
 
-/*
-    $sql = "SELECT id as id,neve,mikor FROM recept,kategoriak where kategoriak.recept_id=recept.id  and kategoriak.kategoria_id='$id'";
-    $result = $conn->query($sql);
+        if(isset($_POST["nev"]) && ($_POST["nev"]!="") && ($_POST["nev"]!=null)){
+            $data=$_POST["nev"];
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            echo $data;
 
-    echo "<h3 style=\"color: white\">Ezeket találtuk:</h3>";
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            echo "<div class='doboz '>
-                        <div class='row'>
+            $sql = "SELECT recept.id as id FROM recept where recept.neve like '%$data%'";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    if (isset($egyezes[$row["id"]])){ $egyezes[$row["id"]]=$egyezes[$row["id"]]+1 ;}else{
+                        $egyezes[$row["id"]]=1 ;
+                    }
+                }
+                }
+        }
+
+
+
+        $talalt_valamit=0;
+    arsort($egyezes);
+    echo "<div  align='center' >";
+    foreach ($egyezes as $key => $value) {
+        $sql = "SELECT * FROM recept where recept.id='$key'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $talalt_valamit=1;
+
+                echo "<div  class='doboz' style='display:inline-block; border-style: solid;  border-width: 7px; border-color: #818181;' >
+                        <div class='row' >
                         <a href='recept.php?id=".$row["id"]."'>
                             <div class='col-sm-2'>
-                                <img class='img-fluid' src='include/img/".$row["id"].".jpg'>
+                                <img class='img-fluid' src='include/img/".$row["id"].".jpg' style=\"width:100%; border-radius: 10px 10px 10px 10px \">
                             </div>
                             <div class='col-sm-10'>
-                                <h1>".$row["neve"]."</h1>
+                                <h1>".$row["neve"]." <span class='badge badge-primary badge-pill\'>" . $value . " </span></h1>
                                 <h5>".$row["mikor"]."</h5>
                             </div>
                             </a>
-                        </div>
-                        </div>";
-        }
-    } else {
-        echo "Nincs találat";
-    }*/
+                        </div></div>
+                       ";
 
+            }
+            }
 
-        echo " <div class=\"doboz\"  >";
-    arsort($egyezes);
-var_dump($egyezes);
-
+    }if($talalt_valamit==0){ echo "<div align='middle'>  <img style='max-width:500px;' src='include/img/no result.png' > </br>
+                <h1><font color='white'>hmmm... nem találunk hasonlót</font></h1></div>
+    "; } echo " </div>";
 
 
 
 
-
- 
- echo"</div>";
 
 
 }

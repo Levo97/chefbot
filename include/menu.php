@@ -114,6 +114,7 @@ include_once 'include/db.con.php'
             margin-bottom: 2%;
             padding: 0.1% 2% 0.1% 2%;
             color: #4b4a5a;
+            border-style: solid;  border-width: 7px; border-color: #818181;
 
         }
 
@@ -196,11 +197,7 @@ include_once 'include/db.con.php'
 
 
         .recent_heading {float: left; width:40%;}
-        .srch_bar {
-            display: inline-block;
-            text-align: right;
-            width: 60%;
-        }
+
         .headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
 
         .recent_heading h4 {
@@ -208,15 +205,7 @@ include_once 'include/db.con.php'
             font-size: 21px;
             margin: auto;
         }
-        .srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
-        .srch_bar .input-group-addon button {
-            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-            border: medium none;
-            padding: 0;
-            color: #707070;
-            font-size: 18px;
-        }
-        .srch_bar .input-group-addon { margin: 0 0 0 -27px;}
+
 
         .chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
         .chat_ib h5 span{ font-size:13px; float:right;}
@@ -386,7 +375,9 @@ if ($ertesites["db"] >0){echo"<span class='badge badge-primary badge-pill\'>" . 
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<a href='kezeles.php'>";echo "Kezelés"; if ($row["recept_moderate"]==1){
+
+                        if ($row["hozzaszolasok_moderate"]==1 || $row["alapanyagok_moderate"]==1 || $row["felhasznalok_moderate"]==1 || $row["kategoriak_moderate"]==1 || $row["mertekegyseg_moderate"]==1 || $row["recept_moderate"]==1 || $row["rights_manage"]==1 )
+                        { echo "<a href='kezeles.php'>";echo "Kezelés"; if ($row["recept_moderate"]==1){
                             $sq2 = "select count(*) as db FROM recept where  hidden=1";
                             $result2 = $conn->query($sq2);
                             if ($result2->num_rows > 0) {
@@ -397,7 +388,7 @@ if ($ertesites["db"] >0){echo"<span class='badge badge-primary badge-pill\'>" . 
                             } echo"</a>";
 
 
-                    }
+                    }}
 
                 }
 

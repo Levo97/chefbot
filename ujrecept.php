@@ -1,7 +1,7 @@
 <?php
 include_once 'include/menu.php';
 
-if (isset($_SESSION["id"])){
+if (isset($_SESSION["id"]) && $_SESSION["tiltott"]!=1){
 ?>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
@@ -297,7 +297,7 @@ if (isset($_SESSION["id"])){
 </body>
 </html>
     <?php }else{
-    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
-                <h1><font color='white'>hmmm... lehet eltévedtünk</font></h1></div>
+    echo "<div align='middle' ><div style='max-width:500px;'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white' >hmmm... valami itt nincs rendben</font></h1></div></div>
     ";
 }

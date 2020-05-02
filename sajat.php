@@ -27,15 +27,16 @@ if ($result->num_rows > 0) {
                         </div>";
     }
 } else {
-    echo"<div align='middle'>  <img src='include/img/lost.png' > </br>
-                <h1><font color='white'>hmmm... úgy néz ki még nincs recepted</font></h1></div>";
-
+    echo "<div  align='middle'  ><div  style='max-width:500px;'>  <img src='include/img/search.png' > </br>
+             <h1><font color='white' style='color: #05728f' >  még nincs recepted  </font></h1></div></div>
+    ";
 }
 
 $conn->close();
 } else {
-    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
-                <h1><font color='white'>hmmm... valami nincs itt rendben</font></h1></div>
+    echo "<div align='middle' ><div style='max-width:500px;'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white' >hmmm... valami nincs itt rendben</font></h1></div></div>
     ";
+
 }
 ?>

@@ -465,7 +465,7 @@ var hozzavalokasd = ";
 
 
 } else {
-    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
-                <h1><font color='white'>hmmm... valami nincs itt rendben</font></h1></div>
+    echo "<div align='middle' ><div style='max-width:500px;'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white' >hmmm... valami nincs itt rendben</font></h1></div></div>
     ";
 }

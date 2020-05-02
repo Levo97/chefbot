@@ -78,16 +78,17 @@ $darab = 0;
         ?>
     </div>
 </div>
-<div class="doboz">
     <?php
     $sql3 = "SELECT * FROM recept WHERE szerzo_id=$id and recept.hidden!=1";
     $result = $conn->query($sql3);
 
     ?>
-    <h3>Receptek:</h3>
-    <div style=" height:200px; overflow-y: auto;">
+
 
         <?php if ($result->num_rows > 0) {
+            echo "   <div class=\"doboz\">
+ <h3>Receptek:</h3>
+    <div style=\" height:200px; overflow-y: auto;\">";
             while ($row = $result->fetch_assoc()) {
                 echo "<div class='doboz '>
                         <div class='row'>
@@ -103,28 +104,26 @@ $darab = 0;
                         </div>
                         </div>";
             }
-        } else {
-            echo "<h3>Még nincs feltöltött recept.</h3>";
-        }
-
         echo "</div></div>";
+
+    }
+
         if (!isset($_GET['id'])) {
-            $sql4 = "SELECT recept.neve as hol,mit,reason FROM hozzaszolasok,recept where ki=$id";
+            $sql4 = "SELECT recept.neve as hol,mit FROM hozzaszolasok,recept where ki=$id";
             $result = $conn->query($sql4);
-            echo "      <div class='doboz ' >
+
+            if ($result->num_rows > 0 ) {  echo "      <div class='doboz ' >
           <h3>Moderált hozzászólásaid:</h3>
 <div class='table-wrapper-scroll-y my-custom-scrollbar'>
 
           ";
 
-            if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "
   
         <div class='mssgBox' >
          <h3>" . $row["hol"] . "</h3>
           <h5>" . $row["mit"] . "</h5>
-          <div class='miert'><h5>" . $row["reason"] . "</h5> </div>
         </div>
        
         
@@ -135,7 +134,7 @@ $darab = 0;
         }
         ?>
 
-    </div>
+    </div></div>
     </body>
     </html>
     <?php

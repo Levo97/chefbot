@@ -307,7 +307,6 @@ if ($jogom['rights'] == 1) {
  
 </table>
  </div>
- </div>
  
  
 
@@ -315,6 +314,75 @@ if ($jogom['rights'] == 1) {
 
 
 }
+    if ($jogom['hozzaszolasok'] == 1) {
+
+        if (isset($_POST["dismiss"])){
+            $hozzaszolas_id=$_POST["dismiss"];
+            $stmt = $conn->prepare("DELETE FROM hozzaszolasok_report WHERE hozzaszolas_id='$hozzaszolas_id' ");
+            $stmt->execute();
+
+        }
+
+        $stmt = $conn->prepare('SELECT felhasznalok.username,felhasznalok.id as felhasznalok_id, hozzaszolasok.mit, hozzaszolasok_report.hozzaszolas_id as hozzaszolas_id , hozzaszolasok.recept_id, count(hozzaszolasok_report.hozzaszolas_id) as db FROM hozzaszolasok, hozzaszolasok_report, felhasznalok where hozzaszolasok_report.hozzaszolas_id=hozzaszolasok.id and hozzaszolasok.ki=felhasznalok.id GROUP by hozzaszolasok_report.hozzaszolas_id order by db desc  ');
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+
+        if ($result->num_rows > 0) {
+
+            echo "
+</div>
+
+
+<div class='doboz '>
+
+<div class='table-wrapper-scroll-y my-custom-scrollbar'>
+
+
+<table class=\"table table-striped\">
+  <tr>
+    <th>Felhasználó </th>
+    <th>Moderálási előzmény </th>
+    <th>Hozzászólás </th>
+    <th>Bejelentés </th>
+    <th> </th>
+
+  </tr>";
+
+            while ($row = $result->fetch_assoc()) {
+                $user_id=$row["felhasznalok_id"];
+                $sql2 = "select count(*)as db,felhasznalok.id as ki from hozzaszolasok,felhasznalok where hozzaszolasok.moderated=1 and hozzaszolasok.ki=felhasznalok.id and felhasznalok.id='$user_id' GROUP by felhasznalok.id ";
+                $result2 = $conn->query($sql2);
+                if ($result2->num_rows > 0) {
+                    while ($row2 = $result2->fetch_assoc()) {
+                        $elozmeny=$row2["db"];
+                    }
+                    }else{
+                    $elozmeny=0;
+                }
+                    echo "
+        
+          <tr>
+    <td><a href='profile.php?id=".$row["felhasznalok_id"]."' >" . $row['username'] . "</a></td>
+            <td>" .$elozmeny . "</td>
+    <td><a href='recept.php?id=" . $row["recept_id"] . "'>" . $row['mit'] . "</td>
+        <td>" . $row['db'] . "</td>
+
+        <td><form method='post' action='kezeles.php'> <button name=\"dismiss\" type=\"submit\" value='".$row["hozzaszolas_id"]."' class=\"btn btn-light\">Téves bejelentés</button></form> </td>
+
+
+
+  </tr> 
+        
+    ";
+            }
+
+            echo "
+</table>
+ </div>
+ </div>
+    ";}
+    }
 if ($jogom['felhasznalok'] == 1) {
     echo "<div class='doboz '>
 <p><ins><b> A kiválasztott felhasználót itt lehet letiltani.</b> </ins></p>
@@ -348,6 +416,28 @@ if ($jogom['felhasznalok'] == 1) {
         if (($adatai['id'] == $_POST["users3"]) && $adatai['tiltott'] == 0) {
             $sql = "UPDATE felhasznalok  set tiltott =1 where id=" . $_POST["users3"] . "  ";
             $result = $conn->query($sql);
+
+            $rm = "SELECT uzenetek_ticket.id as ticket_id FROM uzenetek_ticket where " . $_POST["users3"] . "=felhasznalo_id  AND tema_id=0 ";
+
+            $result = $conn->query($rm);       $ticket_id=0;
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $ticket_id= $row["ticket_id"];
+                }                $ido=date("Y-m-d H:i:s");
+
+                $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ($ticket_id,0,'Nem megfelelő viselkedés miatt letiltottuk a felhasználódat. A továbbiakban a hozzászólás és arecep létrehozás funkció nem áll rendelkezésedre.', '$ido',2)";
+                $result = $conn->query($rm);
+
+            }else{
+
+                $rm = "insert into uzenetek_ticket (felhasznalo_id) values (" . $_POST["users3"] . ")";
+                $result = $conn->query($rm);
+
+                $ido=date("Y-m-d H:i:s");
+
+                $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato 	) values ((SELECT MAX(id) from uzenetek_ticket WHERE uzenetek_ticket.felhasznalo_id=" . $_POST["users3"] . " and uzenetek_ticket.tema_id=0),0,'Nem megfelelő viselkedés miatt letiltottuk a felhasználódat. A továbbiakban a hozzászólás és arecep létrehozás funkció nem áll rendelkezésedre.', '$ido',2)";
+                $result = $conn->query($rm);}
+
 
             echo '<script language="javascript">';
             echo 'alert("Sikeresen letiltottuk a felhasználót")';
@@ -400,6 +490,20 @@ if ($jogom['felhasznalok'] == 1) {
             $sql = "UPDATE felhasznalok  set tiltott =NULL where id=" . $_POST["users4"] . "  ";
             $result = $conn->query($sql);
 
+
+            $rm = "SELECT uzenetek_ticket.id as ticket_id FROM uzenetek_ticket where " . $_POST["users4"] . "=felhasznalo_id  AND tema_id=0 ";
+
+            $result = $conn->query($rm);       $ticket_id=0;
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $ticket_id= $row["ticket_id"];
+                }                $ido=date("Y-m-d H:i:s");
+
+                $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ($ticket_id,0,'A felhasználód tiltását visszavontuk.', '$ido',0)";
+                $result = $conn->query($rm);
+
+            }
+
             echo '<script language="javascript">';
             echo 'alert("Sikeresen feloldottuk a tiltást")';
             echo '</script>';
@@ -428,13 +532,27 @@ if ($jogom['felhasznalok'] == 1) {
   <tr>
     <th>Felhasználó </th>
     <th>Bejelentkezve </th>
+        <th>Moderelt hozzászólások </th>
     <th>Tiltott </th>
 
   </tr>";
 
     foreach ($felhasznalok as $felhasznalo) {
+
+
         $tiltotte = "";
         if ($felhasznalo['tiltott'] != null) {
+
+            $sql2 = "select count(*)as db,felhasznalok.id as ki from hozzaszolasok,felhasznalok where hozzaszolasok.moderated=1 and hozzaszolasok.ki=felhasznalok.id and felhasznalok.id=" . $felhasznalo['id'] . " GROUP by felhasznalok.id ";
+            $result2 = $conn->query($sql2);
+            if ($result2->num_rows > 0) {
+                while ($row2 = $result2->fetch_assoc()) {
+                    $elozmeny=$row2["db"];
+                }
+            }else{
+                $elozmeny=0;
+            }
+
             $tiltotte = "Igen";
 
 
@@ -443,6 +561,7 @@ if ($jogom['felhasznalok'] == 1) {
           <tr>
     <td>" . $felhasznalo['username'] . "</td>
     <td>" . $felhasznalo['bejelentkezve'] . "</td>
+    <td>" . $elozmeny . "</td>
     <td>" . $tiltotte . "</td>
 
 
@@ -596,7 +715,7 @@ if ($jogom['alapanyagok'] == 1) {
       </tr>  ";
 
         }
-        echo " </table> </div> </div>";
+        echo " </table></div>";
     }
 
 }
@@ -743,8 +862,8 @@ if (isset($_POST["etlap_modositas"])) {
 
 
 $conn->close();}else{
-    echo "<div align='middle'>  <img src='include/img/lost.png' > </br>
-                <h1><font color='white'>hmmm... lehet eltévedtünk</font></h1></div>
+    echo "<div align='middle' ><div style='max-width:500px;'>  <img src='include/img/lost.png' > </br>
+                <h1><font color='white' >hmmm... valami nincs itt rendben</font></h1></div></div>
     ";
 }
 ?>
