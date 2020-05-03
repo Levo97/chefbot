@@ -305,7 +305,7 @@ include_once 'include/db.con.php'
              text-decoration: none;
          }
         .doboz a:link{
-            color: rgb(15, 2, 79);
+            color: rgb(23, 2, 136);
             background-color: transparent;
             text-decoration: none;
         }

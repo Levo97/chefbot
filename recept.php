@@ -188,6 +188,9 @@ if ($hidden_recept == 0){
                     $current_user = array_merge($current_user, array('tiltott' => $row["tiltott"], 'jog' => $row["hozzaszolasok_moderate"]));
                 }
 
+            }else{
+                $current_user = array_merge($current_user, array('tiltott' => 0, 'jog' =>0));
+
             }
 
             if (isset($_POST['text'])) {
@@ -218,7 +221,12 @@ if ($hidden_recept == 0){
 
 
             if (isset($_POST['felhasznalo'])) {
-                $felhasznalo_id=$_SESSION['id'] ;
+                $text = $_POST['felhasznalo_1'];
+                $text = trim($text);
+                $text = stripslashes($text);
+                $text = htmlspecialchars($text);
+
+                $felhasznalo_id=$_POST['felhasznalo_0'] ;
                 $rm = "UPDATE hozzaszolasok set moderated=1 where id= '" . $_POST['felhasznalo'] . "'";
                 $result = $conn->query($rm);
 
@@ -232,7 +240,7 @@ if ($hidden_recept == 0){
                 $ticket_id= $row["ticket_id"];
             }                $ido=date("Y-m-d H:i:s");
 
-            $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ($ticket_id,0,'A ".$recept_neve." recepthez való hozzászólásod nem helyénvaló, ezért töröltük.', '$ido',1)";
+            $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato,comment) values ($ticket_id,0,'A ".$recept_neve." recepthez való hozzászólásod nem helyénvaló, ezért töröltük. Hozzászzólásod: ".$text."', '$ido',1,'" . $_POST['felhasznalo'] . "')";
             $result = $conn->query($rm);
 
         }else{
@@ -242,14 +250,14 @@ if ($hidden_recept == 0){
 
                 $ido=date("Y-m-d H:i:s");
 
-                $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato 	) values ((SELECT MAX(id) from uzenetek_ticket WHERE uzenetek_ticket.felhasznalo_id=$felhasznalo_id and uzenetek_ticket.tema_id=0),0,'A ".$recept_neve." recepthez való hozzászólásod nem helyénvaló, ezért töröltük. ', '$ido',1)";
+                $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato,comment 	) values ((SELECT MAX(id) from uzenetek_ticket WHERE uzenetek_ticket.felhasznalo_id=$felhasznalo_id and uzenetek_ticket.tema_id=0),0,'A ".$recept_neve." recepthez való hozzászólásod nem helyénvaló, ezért töröltük. Hozzászzólásod: ".$text." ', '$ido',1,'" . $_POST['felhasznalo'] . "')";
                 $result = $conn->query($rm);}
             }
 
 
 
             if (isset($_POST['felhasznalo2'])) {
-                $felhasznalo_id=$_SESSION['id'] ;
+                $felhasznalo_id=$_POST['felhasznalo2_0'] ;
 
                 $rm = "select COUNT(*) as db from hozzaszolasok_report where ki=$felhasznalo_id and hozzaszolas_id='" . $_POST['felhasznalo2'] . "'";
                 $result = $conn->query($rm);
@@ -275,7 +283,7 @@ if (!($row['db']>0)){
 
 
         }
-        $sql2 = "SELECT mit, username,hozzaszolasok.id as hozzaszolasok_id FROM hozzaszolasok, felhasznalok where $id=hozzaszolasok.recept_id AND hozzaszolasok.ki=felhasznalok.id and moderated=0 ";
+        $sql2 = "SELECT hozzaszolasok.ki as ki,mit, username,hozzaszolasok.id as hozzaszolasok_id FROM hozzaszolasok, felhasznalok where $id=hozzaszolasok.recept_id AND hozzaszolasok.ki=felhasznalok.id and moderated=0 ";
 
         $result = $conn->query($sql2);
         if (isset($_SESSION['id'])) {
@@ -293,12 +301,18 @@ if (!($row['db']>0)){
                     if ($current_user['jog'] == 1) {
                         echo "     
     <form method = 'post' id = 'rm' action ='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id'>
-     <button type = 'submit' class='btn btn'  id='felhasznalo' name='felhasznalo' value=" . $row["hozzaszolasok_id"] . "><p style=\"color:black\">Törlés</p></button></form>";
+     <button type = 'submit' class='btn btn'  id='felhasznalo' name='felhasznalo' value=" . $row["hozzaszolasok_id"] . "><p style=\"color:black\">Törlés</p></button>
+           <input type='hidden' name='felhasznalo_0' id='felhasznalo_0' value='" . $row["ki"] . "'>           <input type='hidden' name='felhasznalo_1' id='felhasznalo_1' value='" . $row["mit"] . "'>
+
+
+     </form>";
                     } else{
 
                         echo "     
     <form method = 'post' id = 'rm' action ='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=$id'>
-     <button type = 'submit' class='btn btn'  id='felhasznalo2' name='felhasznalo2' value=" . $row["hozzaszolasok_id"] . "><p style=\"color:black\">Report</p></button></form>";
+     <button type = 'submit' class='btn btn'  id='felhasznalo2' name='felhasznalo2' value=" . $row["hozzaszolasok_id"] . "><p style=\"color:black\">Report</p></button>                               
+      <input type='hidden' name='felhasznalo2_0' id='felhasznalo2_0' value='" . $row["ki"] . "'>
+</form>";
                     }}
                 echo "
     </div>

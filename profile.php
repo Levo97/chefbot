@@ -107,13 +107,27 @@ $darab = 0;
         echo "</div></div>";
 
     }
+    $x=0;
 
-        if (!isset($_GET['id'])) {
-            $sql4 = "SELECT recept.neve as hol,mit FROM hozzaszolasok,recept where ki=$id";
+    $uid=$_SESSION["id"];
+    $sql4 = "SELECT hozzaszolasok_moderate,  felhasznalok_moderate  FROM jogok where felhasznalok_id=$uid";
+    $result = $conn->query($sql4);
+    if ($result->num_rows > 0 ) {
+        while ($row = $result->fetch_assoc()) {
+            if($row["hozzaszolasok_moderate"]==1){
+                $x=1;
+            } elseif ($row["felhasznalok_moderate"]==1) {
+                $x=2;
+
+            }
+        }
+        }
+        if (!isset($_GET['id']) || $x>0 ) {
+            $sql4 = "SELECT ki,mit,recept.neve as hol, hozzaszolasok.id from hozzaszolasok,recept where recept.id=hozzaszolasok.recept_id and ki=$id ORDER by id desc ";
             $result = $conn->query($sql4);
 
             if ($result->num_rows > 0 ) {  echo "      <div class='doboz ' >
-          <h3>Moderált hozzászólásaid:</h3>
+          <h3>Moderált hozzászólások:</h3>
 <div class='table-wrapper-scroll-y my-custom-scrollbar'>
 
           ";
@@ -124,6 +138,10 @@ $darab = 0;
         <div class='mssgBox' >
          <h3>" . $row["hol"] . "</h3>
           <h5>" . $row["mit"] . "</h5>
+          "; if ($x==1){ $ki=$row["ki"]; $hozzaszolas_id=$row["id"]; echo "<form method='post' action='profile.php?id=$ki'> <button name=\"cloes_ticket\" type=\"submit\" value='$hozzaszolas_id' class=\"btn btn-primary\"> vétózás</button>
+      <input type='hidden' name='felhasznalo' id='felhasznalo' value='" . $row["ki"] . "'>
+
+</form> ";} echo"
         </div>
        
         
@@ -131,7 +149,41 @@ $darab = 0;
                 }
             }
             echo " </div></div>";
+
+
+            if (isset($_POST["cloes_ticket"])){
+                $hozzaszolas_id2=$_POST["cloes_ticket"];
+                $felhasznalo=$_POST["felhasznalo"];
+                $sq2 = "update hozzaszolasok SET moderated=0 where id='$hozzaszolas_id2'";
+                $result = $conn->query($sq2);
+
+                $sq2 = "SELECT id FROM uzenetek_ticket where tema_id=1 and closed=0 and felhasznalo_id='$felhasznalo'";
+                $result = $conn->query($sq2);
+                if ($result->num_rows > 0 ) {
+                    while ($row = $result->fetch_assoc()) {
+                        $ticket_id=$row["id"];
+                        $sq3 = "update uzenetek_ticket SET closed=1 where id='$ticket_id'";
+                        $result2 = $conn->query($sq3);
+                    }
+
+                    $sq4 = "SELECT id FROM uzenetek_ticket where tema_id=0 and closed=0 and felhasznalo_id='$felhasznalo'";
+                    $result3 = $conn->query($sq4);
+                    if ($result3->num_rows > 0 ) {
+
+                        while ($row2 = $result3->fetch_assoc()) {
+                            $ticket_id2=$row2["id"];
+                            $ido=date("Y-m-d H:i:s");
+                            $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ($ticket_id2,0,'A moderált hozzászólásodat visszaállítottuk.', '$ido',0)";
+                            $result4 = $conn->query($rm);
+
+
+                        }
+                        }
+                }
+            }
         }
+
+
         ?>
 
     </div></div>

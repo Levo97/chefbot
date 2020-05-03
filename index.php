@@ -272,6 +272,10 @@ if(count($egyezes)>0){
 
 
 
+    
+
+
+
             $elso=1;
             $uid = $_SESSION["id"];
             $sql = "SELECT * FROM recept, pontozas WHERE  hidden=0  and pontozas.ki=" . $uid . " AND pontozas.pont=1 AND pontozas.mit=recept.id";
