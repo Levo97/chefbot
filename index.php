@@ -251,7 +251,7 @@ if(count($egyezes)>0){
                     <h2>" . $row["neve"] . "</h2>
                     <p>" . $row["mikor"] . "</p>
                 </div></a>
-            </div>";}echo"
+            </div>";  }} }  echo"
     </div>
 
     <!-- Left and right controls -->
@@ -266,14 +266,49 @@ if(count($egyezes)>0){
 </div>
 </div>";
 
-            }}
-
-    }
+            }
 
 
+            $elso=1;
 
-    
+            $sql = "SELECT mit as id,recept.neve as neve ,mikor,sum(pont)as pontok FROM pontozas,recept where recept.id =pontozas.mit GROUP by id ORDER by pontok desc limit 5";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                echo"
+<div class=\"container\" style=\"color: white\">
+   <h2 style=\"transform: rotate(90deg); color: #85b9c4; transform-origin: left top 0; \">Legjobbjaink </h2>
+    <div id=\"myCarousel5\" class=\"carousel slide\" data-ride=\"carousel\">
 
+
+        <!-- Wrapper for slides -->
+        <div class=\"carousel-inner\">";
+                while ($row = $result->fetch_assoc()) {
+                    if ($elso==1){  echo " <div class=\"item active\">";}else{ echo " <div class=\"item\">";} $elso++;
+                    echo "
+
+  <a href='recept.php?id=" . $row["id"] . "'> <div  class='col-sm-5' >
+                    <div  style='max-height:200px; max-width:300px;' >   <img class='img-fluid' src='include/img/" . $row["id"] . ".jpg'  style=\"width:100%;  border-radius: 10px 10px 10px 10px\" > </div>
+                </div>
+                <div class='col-sm-7' >
+                    <h2>" . $row["neve"] . "</h2>
+                    <p>" . $row["mikor"] . "</p>
+                </div></a>
+            </div>";}echo"
+    </div>
+
+    <!-- Left and right controls -->
+    <a class=\"left carousel-control\" style='border-radius: 20px 20px 20px 20px;' href=\"#myCarousel5\" data-slide=\"prev\">
+        <span class=\"glyphicon glyphicon-chevron-left\"></span>
+        <span class=\"sr-only\">Previous</span>
+    </a>
+    <a class=\"right carousel-control\"  style='border-radius: 20px 20px 20px 20px;' href=\"#myCarousel5\" data-slide=\"next\">
+        <span class=\"glyphicon glyphicon-chevron-right\"></span>
+        <span class=\"sr-only\">Next</span>
+    </a>
+</div>
+</div>";
+
+            }
 
 
             $elso=1;
