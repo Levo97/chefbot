@@ -1,15 +1,15 @@
 <?php
 include_once 'include/menu.php';
-if (isset($_SESSION["id"])){
+if (isset($_SESSION["id"])) {
 
-$uid = $_SESSION['id'];
+    $uid = $_SESSION['id'];
 
-$sql = "SELECT id,neve,mikor FROM recept where szerzo_id='$uid' order by mikor desc";
+    $sql = "SELECT id,neve,mikor FROM recept where szerzo_id='$uid' order by mikor desc";
 
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo "<div class='mssgBox ' style='background-color:   #eaeded  ;'>
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo "<div class='doboz ' >
                         <div class='row'>
                         <a href='recept.php?id=" . $row["id"] . "'>
                             <div class='col-sm-2'>
@@ -25,14 +25,14 @@ if ($result->num_rows > 0) {
                             </a>
                         </div>
                         </div>";
-    }
-} else {
-    echo "<div  align='middle'  ><div  style='max-width:500px;'>  <img src='include/img/search.png' > </br>
+        }
+    } else {
+        echo "<div  align='middle'  ><div  style='max-width:500px;'>  <img src='include/img/search.png' > </br>
              <h1><font color='white' style='color: #05728f' >  még nincs recepted  </font></h1></div></div>
     ";
-}
+    }
 
-$conn->close();
+    $conn->close();
 } else {
     echo "<div align='middle' ><div style='max-width:500px;'>  <img src='include/img/lost.png' > </br>
                 <h1><font color='white' >hmmm... valami nincs itt rendben</font></h1></div></div>

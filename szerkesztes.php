@@ -96,7 +96,7 @@ if (isset($_POST["recept_az"]) && isset($_SESSION['id'])) {
     }
 
 
-    $sql = "SELECT alapanyagok_id,mertekegyseg_id , mertekegyseg.neve as mertekegyseg_neve, alapanyagok.neve as alapanyag_neve FROM alapanyagok_meretekegyseg,mertekegyseg, alapanyagok where mertekegyseg.id=alapanyagok_meretekegyseg.mertekegyseg_id and alapanyagok_meretekegyseg.alapanyagok_id=alapanyagok.id ";
+    $sql = "SELECT alapanyagok_id,mertekegyseg_id , mertekegyseg.neve as mertekegyseg_neve, alapanyagok.neve as alapanyag_neve FROM alapanyagok_meretekegyseg,mertekegyseg, alapanyagok where mertekegyseg.id=alapanyagok_meretekegyseg.mertekegyseg_id and alapanyagok_meretekegyseg.alapanyagok_id=alapanyagok.id order by alapanyagok.neve ";
     $result = $conn->query($sql);
     $alapanyagok = array();
 
@@ -160,7 +160,7 @@ $kep="include/img/".$string.".jpg";
                            </div> 
                         
   <h3>A recepted neve:</h3>
-        <input type=\"text\" id=\"nev\" name=\"nev\" maxlength=\"20\" placeholder=\"Recept neve\" value='" . $recept["neve"] . "' required><br>
+        <input type=\"text\" id=\"nev\" name=\"nev\" maxlength=\"20\" pattern=\".{5,}\"  placeholder=\"Recept neve\" value='" . $recept["neve"] . "' required><br>
  
 
   <h3>Hozzávalók:</h3>
@@ -175,7 +175,7 @@ $kep="include/img/".$string.".jpg";
     }
 
     echo "  
-</select><input type=\"number\" min=\"0\" step=\"any\" name=\"2\" class=\"form-control\" id=\"mennyi\"><select
+</select><input type=\"number\" min=\"0\" step=\"0.01\" name=\"2\" class=\"form-control\" id=\"mennyi\"><select
                         id=\"mertekegyseg\" name=\"3\" class=\"form-control\">
                 </select>
             </div>
@@ -293,7 +293,7 @@ var hozzavalokasd = ";
 
 
 <h4>egyéb nem rögzíthető adatok: </h4>
-        <textarea id="egyeb" name="egyeb" class="form-control" id="exampleFormControlTextarea1" rows="1"  placeholder='<?php echo $recept["egyeb"];?>' ></textarea>
+        <textarea id="egyeb" name="egyeb" pattern=".{3,}" class="form-control" id="exampleFormControlTextarea1" rows="1"  placeholder='<?php echo $recept["egyeb"];?>' ></textarea>
 
 
         <button style="margin-top: 1%;" type="submit" class="btn btn-success" onclick="fuz()">Feltöltöm</button>
@@ -468,4 +468,4 @@ var hozzavalokasd = ";
     echo "<div align='middle' ><div style='max-width:500px;'>  <img src='include/img/lost.png' > </br>
                 <h1><font color='white' >hmmm... valami nincs itt rendben</font></h1></div></div>
     ";
-}
+}$conn->close();

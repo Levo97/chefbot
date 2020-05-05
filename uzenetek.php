@@ -26,14 +26,14 @@ background-color: #60929c;
 <div class=\"container\">
 <div class=\"messaging\">
       <div class=\"inbox_msg\" style='border-style: solid; border-width: 7px; border-color: #818181; background-color: #ced1d8'>
-        <div class=\"inbox_people\">
+        <div class=\"inbox_people col-sm-4\">
           <div class=\"headind_srch\" style='background-color: #ced1d8; border-style: solid; border-width: 1px; border-color: #818181;'>
             <div class=\"recent_heading\">
               <h4>Üzenetek</h4>
             </div>
        
           </div>
-          <div class=\"inbox_chat\" style=\"background-color: #ced1d8;\">";
+          <div class=\"inbox_chat \" style=\"background-color: #ced1d8;\">";
         $kategoriak = array();
         $kategoriak[0][0] = $uzenetek[0]["tema"];
         $kategoriak[0][1] = 0;
@@ -208,7 +208,7 @@ A moderátoraink letiltották a felhasználódat. A tiltás a többszörös hely
             echo "   </div>
         </div><div class=\"table-wrapper-scroll-y my-custom-scrollbar\" style='background-color: #ced1d8  float: left;
             padding: 46px 15px 0 25px;
-            width: 60%;  height: 600px'>
+            height: 600px'>
           <div class=\"msg_history\">";
 
             $sql = "SELECT x.id as uzenet_id,x.ticket_id as ticket_id,z.tema as tema ,x.user_boolean as user_boolean,x.uzenet as uzenet,x.mikor as mikor,x.olvasott as olvasott , x.visszavonhato 
@@ -243,7 +243,7 @@ where x.ticket_id=y.id and z.ID=y.tema_id and  y.felhasznalo_id=$felhasznalo and
             }
 
         } elseif (!isset($_POST["open_ticket"])) {
-            echo "</div></div><div align='middle'>  <img src='include/img/postman.png' >  </div></div>";
+            echo "</div></div><div align='middle' class='col-sm-8' >  <img  src='include/img/postman.png' style='height: auto; max-width: 100%;' >  </div></div>";
         }
 
         echo " 
@@ -268,4 +268,5 @@ where x.ticket_id=y.id and z.ID=y.tema_id and  y.felhasznalo_id=$felhasznalo and
     echo "<div align='middle' ><div style='max-width:500px;'>  <img src='include/img/lost.png' > </br>
                 <h1><font color='white' >hmmm... valami nincs itt rendben</font></h1></div></div>
     ";
+    $conn->close();
 }

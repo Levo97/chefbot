@@ -14,13 +14,12 @@ $result = $conn->query($sql1);
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     if ($pont != $row["pont"]) {
-        echo $pont;
         $conn->query($sql2);
     };
 
 } else {
     $conn->query($sql3);
 }
-
+$conn->close();
 echo "<script>window.location.href = 'recept.php?id=" . $id . "';</script>";
 ?>

@@ -66,7 +66,7 @@ if (isset($_SESSION["id"])) {
 
     if ($jogom['rights'] == 1) {
         echo "<div class='doboz '>
-<p> <ins><b>A kiválasztott felhasználókhoz itt lehet jogokat hozzárendelni.</b> </ins></p>
+<p style='text-align: center'  > <ins><b>A kiválasztott felhasználókhoz itt lehet jogokat hozzárendelni.</b> </ins></p>
 <form method='post' action='kezeles.php'>
 <label for=\"users\">Felhasználó:</label>
 <select data-live-search=\"true\" class=\"selectpicker\" id=\"users\" name=\"users\" required>
@@ -150,7 +150,7 @@ if (isset($_SESSION["id"])) {
 
 
         echo "<div class='doboz '>
-<p> <ins><b>A kiválasztott felhasználótól itt lehet jogot elvenni.</b> </ins></p>
+<p style='text-align: center'  > <ins><b>A kiválasztott felhasználótól itt lehet jogot elvenni.</b> </ins></p>
 <form method='post' action='kezeles.php'>
 <label for=\"users2\">Felhasználó:</label>
 <select id=\"users2\" name=\"users2\" data-live-search=\"true\" class=\"selectpicker\" required>
@@ -413,64 +413,68 @@ if (isset($_SESSION["id"])) {
                       <td><form method='post' action='kezeles.php'><input type='hidden' name='felhasznalo1' id='felhasznalo1' value='" . $row2["felhasznalo_id"] . "'><button name=\"not_approve\" type=\"submit\" value='" . $row2["comment"] . "' class=\"btn btn-light\">Nem jogos</button></form></td>
                       <td><form method='post' action='kezeles.php'><input type='hidden' name='felhasznalo2' id='felhasznalo2' value='" . $row2["felhasznalo_id"] . "'><button name=\"approve\" type=\"submit\" value='" . $row2["comment"] . "' class=\"btn btn-light\">Jogos vétó</button></form></td>
 
-";} echo "
+";
+            }
+            echo "
   </tr> 
      </table>
  </div>
  </div>   
-    ";       }
-
-
-    if (isset($_POST["not_approve"])){
-        $hozzaszolas_id2=$_POST["not_approve"];
-        $felhasznalo=$_POST["felhasznalo1"];
-
-
-        $sq2 = "SELECT id FROM uzenetek_ticket where tema_id=1 and closed=0 and felhasznalo_id='$felhasznalo'";
-        $result = $conn->query($sq2);
-        if ($result->num_rows > 0 ) {
-            while ($row = $result->fetch_assoc()) {
-                $ticket_id=$row["id"];
-                $sq3 = "update uzenetek_ticket SET closed=1 where id='$ticket_id'";
-                $result2 = $conn->query($sq3);
-            }
-
-            $sq4 = "SELECT id FROM uzenetek_ticket where tema_id=0 and closed=0 and felhasznalo_id='$felhasznalo'";
-            $result3 = $conn->query($sq4);
-            if ($result3->num_rows > 0 ) {
-
-                while ($row2 = $result3->fetch_assoc()) {
-                    $ticket_id2=$row2["id"];
-                    $ido=date("Y-m-d H:i:s");
-                    $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ($ticket_id2,0,'A moderált hozzászólásodra küldött kérvényedet elutasították..', '$ido',0)";
-                    $result4 = $conn->query($rm);
-
-
-                }
-            }
+    ";
         }
-    }    if (isset($_POST["approve"])){
-            $hozzaszolas_id2=$_POST["approve"];
-            $felhasznalo=$_POST["felhasznalo2"];
-            $sq2 = "update hozzaszolasok SET moderated=0 where id='$hozzaszolas_id2'";
-            $result = $conn->query($sq2);
+
+
+        if (isset($_POST["not_approve"])) {
+            $hozzaszolas_id2 = $_POST["not_approve"];
+            $felhasznalo = $_POST["felhasznalo1"];
+
 
             $sq2 = "SELECT id FROM uzenetek_ticket where tema_id=1 and closed=0 and felhasznalo_id='$felhasznalo'";
             $result = $conn->query($sq2);
-            if ($result->num_rows > 0 ) {
+            if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    $ticket_id=$row["id"];
+                    $ticket_id = $row["id"];
                     $sq3 = "update uzenetek_ticket SET closed=1 where id='$ticket_id'";
                     $result2 = $conn->query($sq3);
                 }
 
                 $sq4 = "SELECT id FROM uzenetek_ticket where tema_id=0 and closed=0 and felhasznalo_id='$felhasznalo'";
                 $result3 = $conn->query($sq4);
-                if ($result3->num_rows > 0 ) {
+                if ($result3->num_rows > 0) {
 
                     while ($row2 = $result3->fetch_assoc()) {
-                        $ticket_id2=$row2["id"];
-                        $ido=date("Y-m-d H:i:s");
+                        $ticket_id2 = $row2["id"];
+                        $ido = date("Y-m-d H:i:s");
+                        $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ($ticket_id2,0,'A moderált hozzászólásodra küldött kérvényedet elutasították..', '$ido',0)";
+                        $result4 = $conn->query($rm);
+
+
+                    }
+                }
+            }
+        }
+        if (isset($_POST["approve"])) {
+            $hozzaszolas_id2 = $_POST["approve"];
+            $felhasznalo = $_POST["felhasznalo2"];
+            $sq2 = "update hozzaszolasok SET moderated=0 where id='$hozzaszolas_id2'";
+            $result = $conn->query($sq2);
+
+            $sq2 = "SELECT id FROM uzenetek_ticket where tema_id=1 and closed=0 and felhasznalo_id='$felhasznalo'";
+            $result = $conn->query($sq2);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $ticket_id = $row["id"];
+                    $sq3 = "update uzenetek_ticket SET closed=1 where id='$ticket_id'";
+                    $result2 = $conn->query($sq3);
+                }
+
+                $sq4 = "SELECT id FROM uzenetek_ticket where tema_id=0 and closed=0 and felhasznalo_id='$felhasznalo'";
+                $result3 = $conn->query($sq4);
+                if ($result3->num_rows > 0) {
+
+                    while ($row2 = $result3->fetch_assoc()) {
+                        $ticket_id2 = $row2["id"];
+                        $ido = date("Y-m-d H:i:s");
                         $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ($ticket_id2,0,'A moderált hozzászólásodat visszaállítottuk.', '$ido',0)";
                         $result4 = $conn->query($rm);
 
@@ -481,11 +485,10 @@ if (isset($_SESSION["id"])) {
         }
 
 
-
-        }
+    }
     if ($jogom['felhasznalok'] == 1) {
         echo "<div class='doboz '>
-<p><ins><b> A kiválasztott felhasználót itt lehet letiltani.</b> </ins></p>
+<p style='text-align: center'  ><ins><b> A kiválasztott felhasználót itt lehet letiltani.</b> </ins></p>
 <form method='post' action='kezeles.php'>
 <label for=\"users3\">Felhasználó:</label>
 <select id=\"users3\" name=\"users3\"  data-live-search=\"true\" class=\"selectpicker\" required>
@@ -561,7 +564,7 @@ if (isset($_SESSION["id"])) {
 </div>";
 
         echo "<div class='doboz '>
-<p> <ins><b>A kiválasztott felhasználó tiltásának visszavonása. </b></ins></p>
+<p style='text-align: center'  > <ins><b>A kiválasztott felhasználó tiltásának visszavonása. </b></ins></p>
 <form method='post' action='kezeles.php'>
 <label for=\"users4\">Felhasználó:</label>
 <select id=\"users4\" name=\"users4\"  data-live-search=\"true\" class=\"selectpicker\" required>
@@ -569,8 +572,9 @@ if (isset($_SESSION["id"])) {
 
 ";
         foreach ($felhasznalok as $felhasznalo) {
-            if ($felhasznalo["tiltott"]==1){
-            echo "  <option value='" . $felhasznalo['id'] . "'>" . $felhasznalo['username'] . "</option>";}
+            if ($felhasznalo["tiltott"] == 1) {
+                echo "  <option value='" . $felhasznalo['id'] . "'>" . $felhasznalo['username'] . "</option>";
+            }
         }
         echo "
 </select>
@@ -633,10 +637,8 @@ if (isset($_SESSION["id"])) {
         if ($result2->num_rows > 0) {
 
 
-
-
-echo"<div class='doboz '>
-<p> <ins><b>Tiltás vétók: </b></ins></p>
+            echo "<div class='doboz '>
+<p style='text-align: center'  > <ins><b>Tiltás vétók: </b></ins></p>
 
 <div class='table-wrapper-scroll-y my-custom-scrollbar'>
 
@@ -653,12 +655,7 @@ echo"<div class='doboz '>
   </tr>";
 
 
-
-
             while ($row2 = $result2->fetch_assoc()) {
-
-
-
 
 
                 $sql3 = "select count(*)as db,felhasznalok.id as ki from hozzaszolasok,felhasznalok where hozzaszolasok.moderated=1 and hozzaszolasok.ki=felhasznalok.id and felhasznalok.id=" . $row2['felhasznalo_id'] . " GROUP by felhasznalok.id ";
@@ -670,15 +667,15 @@ echo"<div class='doboz '>
                 } else {
                     $elozmeny = 0;
                 }
-                echo"
+                echo "
                  <tr>
     <td><a href='profile.php?id=" . $row2["felhasznalo_id"] . "' >" . $row2['username'] . "</a></td>
     <td>" . $elozmeny . "</td>
     <td>" . $row2["uzenet"] . "</td>
-    <td><form method='post' action='kezeles.php'><button name=\"approve_banveto\" type=\"submit\" value='" . $row2["ticket_id"]  . "' class=\"btn btn-light\">Jogos vétó</button></form></td>
+    <td><form method='post' action='kezeles.php'><button name=\"approve_banveto\" type=\"submit\" value='" . $row2["ticket_id"] . "' class=\"btn btn-light\">Jogos vétó</button></form></td>
     <td><form method='post' action='kezeles.php'>
     <input type='hidden' name='felhasznalo_0' id='felhasznalo_0' value='" . $row2["felhasznalo_id"] . "'>
-    <button name=\"dissmis_banveto\" type=\"submit\" value='" . $row2["ticket_id"]  . "' class=\"btn btn-light\">Nem jogos</button></form></td>
+    <button name=\"dissmis_banveto\" type=\"submit\" value='" . $row2["ticket_id"] . "' class=\"btn btn-light\">Nem jogos</button></form></td>
 
 
   </tr> 
@@ -688,7 +685,7 @@ echo"<div class='doboz '>
 
             }
 
-                echo "
+            echo "
         
   
 
@@ -698,20 +695,19 @@ echo"<div class='doboz '>
     ";
         }
 
-        if (isset($_POST["approve_banveto"])){
-            $ticket=$_POST["approve_banveto"];
+        if (isset($_POST["approve_banveto"])) {
+            $ticket = $_POST["approve_banveto"];
 
 
-$ticket_user=0;
+            $ticket_user = 0;
             $sq2 = "SELECT * FROM uzenetek_ticket where id='$ticket'";
             $result = $conn->query($sq2);
-            if ($result->num_rows > 0 ) {
+            if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
 
-                    $ticket_user=$row["felhasznalo_id"] ;
+                    $ticket_user = $row["felhasznalo_id"];
                     $rm = "update felhasznalok SET tiltott=0 where id='" . $row["felhasznalo_id"] . "'";
                     $result4 = $conn->query($rm);
-
 
 
                     $rm = "update uzenetek_ticket SET closed=1 where id='$ticket'";
@@ -720,22 +716,23 @@ $ticket_user=0;
 
                 $sq3 = "SELECT id FROM uzenetek_ticket where felhasznalo_id='$ticket_user' and tema_id=0 and closed=0";
                 $result3 = $conn->query($sq3);
-                if ($result3->num_rows > 0 ) {
+                if ($result3->num_rows > 0) {
                     while ($row3 = $result3->fetch_assoc()) {
-                        $ido=date("Y-m-d H:i:s");
+                        $ido = date("Y-m-d H:i:s");
                         $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ('" . $row3["id"] . "',0,'A felhasználód tiltását visszavettük.', '$ido',0)";
                         $result4 = $conn->query($rm);
 
-                    }}
+                    }
+                }
 
             }
 
 
         }
 
-        if (isset($_POST["dissmis_banveto"])){
-            $ticket=$_POST["dissmis_banveto"];
-            $ticket_user=$_POST["felhasznalo_0"];
+        if (isset($_POST["dissmis_banveto"])) {
+            $ticket = $_POST["dissmis_banveto"];
+            $ticket_user = $_POST["felhasznalo_0"];
 
 
             $rm = "update uzenetek_ticket SET closed=1 where id='$ticket'";
@@ -744,13 +741,14 @@ $ticket_user=0;
 
             $sq3 = "SELECT id FROM uzenetek_ticket where felhasznalo_id='$ticket_user' and tema_id=0 and closed=0";
             $result3 = $conn->query($sq3);
-            if ($result3->num_rows > 0 ) {
+            if ($result3->num_rows > 0) {
                 while ($row3 = $result3->fetch_assoc()) {
-                    $ido=date("Y-m-d H:i:s");
+                    $ido = date("Y-m-d H:i:s");
                     $rm = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor,visszavonhato) values ('" . $row3["id"] . "',0,'A felhasználód tiltására adott vétódat visszautasítottuk.', '$ido',0)";
                     $result4 = $conn->query($rm);
 
-                }}
+                }
+            }
 
         }
 
@@ -759,7 +757,7 @@ $ticket_user=0;
 
 
         echo "<div class='doboz'>
-<p> <ins><b>Alapanyag felvitele: </b></ins></p>
+<p style='text-align: center'  > <ins><b>Alapanyag felvitele: </b></ins></p>
     <form method='post' action='kezeles.php'>
 
     <label for=\"rname\">Neve:</label>
@@ -852,7 +850,7 @@ $ticket_user=0;
 
         }
 
-        $stmt = $conn->prepare('SELECT * FROM alapanyagok');
+        $stmt = $conn->prepare('SELECT * FROM alapanyagok order by neve');
         $stmt->execute();
         $result = $stmt->get_result();
         $alapanyagok = array();
@@ -865,7 +863,7 @@ $ticket_user=0;
 
 
             echo " <div class='doboz' >
-   <p><ins> <b>Alapanyagok: </b></ins></p>
+   <p style='text-align: center'  ><ins> <b>Alapanyagok: </b></ins></p>
    
 <div class='table-wrapper-scroll-y my-custom-scrollbar'>
 <table class=\"table table-bordered table-striped mb-0\">
@@ -892,7 +890,7 @@ $ticket_user=0;
       </tr>  ";
 
             }
-            echo " </table></div>";
+            echo " </table></div></div>";
         }
 
     }
@@ -911,7 +909,7 @@ $ticket_user=0;
 
 
             echo "  <div class='doboz' >
-   <p><ins> <b>Jóváhagyásra váró receptek: </b></ins></p>
+   <p style='text-align: center'  ><ins> <b>Jóváhagyásra váró receptek: </b></ins></p>
 <div class='table-wrapper-scroll-y my-custom-scrollbar'>
 <table class=\"table table-bordered table-striped mb-0\">
     <thead>
@@ -955,7 +953,7 @@ $ticket_user=0;
         }
 
         echo "  <div class='doboz'>
-<p> <ins><b>Kategoria felvitele: </b></ins></p>
+<p style='text-align: center'  > <ins><b>Kategoria felvitele: </b></ins></p>
     <form method='post' action='kezeles.php'>
 
     <label for=\"rname\">Neve:</label>
@@ -1004,35 +1002,42 @@ $ticket_user=0;
     }
 
     if (isset($_POST["etlap_modositas"])) {
-        $status = 0;
         $status = $_POST["recept_status"];
         if ($status == 1) {
-            $status = 0;
-
-        } else {
             $status = 1;
 
-        }
+        } else {
+            $status = 0;
 
-        $sq2 = "select id from uzenetek_ticket where felhasznalo_id=" . $_POST["szerzo_id"] . " and tema_id=0";
+        }
+        echo $status;
+
+
+        $sq2 = "select id from uzenetek_ticket where felhasznalo_id=" . $_POST["szerzo"] . " and tema_id=0";
         $y = $conn->query($sq2);
+
         if ($y->num_rows > 0) {
-            while ($sor = $y > fetch_assoc()) {
+            $az = $_POST["recept_az"];
+            while ($sor = $y->fetch_assoc()) {
                 $ticket_id = $sor['id'];
                 $ido = date("Y-m-d H:i:s");
-                if ($status = 1) {
+                if ($status == 1) {
                     $sq3 = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ($ticket_id,0,'Recepted felkerűlt az étlapra!', '$ido')";
+                    $sql = "UPDATE recept  set hidden =0 where id='$az'  ";
+
                 } else {
                     $sq3 = "insert into uzenetek (ticket_id,user_boolean,uzenet,mikor) values ($ticket_id,0,'Recepted lekerűlt az étlapról!', '$ido')";
-                }
-                $z = $conn->query($sq3);
+                    $sql = "UPDATE recept  set hidden =1 where id='$az'  ";
 
+                }
+
+                $z = $conn->query($sq3);
+                $result = $conn->query($sql);
 
             }
         }
 
-        $sql = "UPDATE recept  set hidden =$status where id=" . $_POST["recept_az"] . "  ";
-        $result = $conn->query($sql);
+
         echo '<script language="javascript">';
         echo 'alert("Sikeresen módosítottad a recept láthatóságát.")';
         echo '</script>';

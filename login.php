@@ -130,7 +130,7 @@ $regisztralt_id=0;
                     $_SESSION["tiltott"] = $row["tiltott"];
                 $_SESSION["user"] = $row["username"];
                 $_SESSION["id"] = $row["id"];
-                $ido=date("Y-m-d H:i:s");
+                $ido = date("Y-m-d H:i:s");
 
 if ($row["bejelentkezve"]==NULL ){
                 $y = $conn->query($sq2);
