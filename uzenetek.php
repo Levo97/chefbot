@@ -99,7 +99,9 @@ background-color: #60929c;
 
 
             echo "   </div>
-        </div><div class=\"mesgs\" style='background-color: #ced1d8  '>
+        </div><<div class=\"table-wrapper-scroll-y my-custom-scrollbar\" style='background-color: #ced1d8  float: left;
+            padding: 46px 15px 0 25px;
+            height: 600px'>
           <div class=\"msg_history\">";
 
             $sql = "SELECT visszavonhato FROM uzenetek where id='$uzenet_id' ";

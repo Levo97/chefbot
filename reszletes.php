@@ -211,6 +211,7 @@ if (isset($_GET["adatok"])) {
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
+                        if ($row["hidden"]!=1){
                         $talalt_valamit = 1;
 
                         echo "<div  class='doboz' style='display:inline-block; border-style: solid;  border-width: 7px; border-color: #818181;' >
@@ -226,7 +227,7 @@ if (isset($_GET["adatok"])) {
                             </a>
                         </div></div>
                        ";
-
+                        }
                     }
                 }
 

@@ -9,12 +9,12 @@ if (isset($_POST["keres"])) {
     $keres = stripslashes($keres);
     $keres = htmlspecialchars($keres);
 }
-$sql = "SELECT id,neve,mikor FROM recept Where LOWER(neve) like LOWER('%$keres%') ORDER BY mikor";
+$sql = "SELECT id,neve,mikor FROM recept Where recept.hidden!=1 and LOWER(neve) like LOWER('%$keres%') ORDER BY mikor";
 
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 
-    $sql = "SELECT id as id,neve,mikor FROM recept,kategoriak where kategoriak.recept_id=recept.id  and kategoriak.kategoria_id='$id'";
+    $sql = "SELECT id as id,neve,mikor FROM recept,kategoriak where recept.hidden!=1 and kategoriak.recept_id=recept.id  and kategoriak.kategoria_id='$id'";
 
 }
 $result = $conn->query($sql);
