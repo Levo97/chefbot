@@ -1,5 +1,4 @@
 # chefbot
-Szakdolgozat
 
 A program PHP, mysql és bootstrap használatával készült.
 
